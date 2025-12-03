@@ -39,7 +39,7 @@ const SplashScreen: React.FC = () => {
                             <span className="token-icon">💎</span>
                             <div className="token-info">
                                 <span className="token-name">Smartour Token</span>
-                                <span className="token-symbol">TOUR</span>
+                                <span className="token-symbol">SMT</span>
                             </div>
                         </div>
                     </div>
