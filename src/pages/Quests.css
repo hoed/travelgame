@@ -1,0 +1,193 @@
+.quests-container {
+    padding: var(--spacing-lg);
+}
+
+.quests-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.quests-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.quest-stats {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.quests-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    background: var(--bg-tertiary);
+    padding: 4px;
+    border-radius: var(--border-radius);
+}
+
+.filter-buttons button {
+    padding: 8px 16px;
+    border-radius: var(--border-radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.filter-buttons button.active {
+    background: var(--bg-primary);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.sort-select {
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.quests-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.quest-card {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.quest-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.quest-card.completed {
+    opacity: 0.7;
+    background: var(--bg-secondary);
+}
+
+.quest-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: var(--spacing-md);
+}
+
+.quest-title-section h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.quest-location {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.quest-reward-badge {
+    background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+    color: white;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    min-width: 60px;
+}
+
+.reward-amount {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.reward-label {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+
+.quest-description {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.5;
+}
+
+.quest-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quest-meta {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.difficulty-badge,
+.type-badge,
+.distance-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.difficulty-badge.easy {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.difficulty-badge.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.difficulty-badge.hard {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.type-badge {
+    background: var(--gray-100);
+    color: var(--text-secondary);
+}
+
+.distance-badge {
+    background: var(--primary-light);
+    color: white;
+}
+
+.start-quest-btn {
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.completed-badge {
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}

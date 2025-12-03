@@ -1,0 +1,15 @@
+.app-container {
+    min-height: 100vh;
+    padding-bottom: 80px;
+    /* Space for bottom navigation */
+    background: var(--bg-secondary);
+}
+
+/* Responsive container */
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 480px;
+        margin: 0 auto;
+        box-shadow: var(--shadow-xl);
+    }
+}
