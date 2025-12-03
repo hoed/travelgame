@@ -91,7 +91,7 @@ const Quests = () => {
                             </div>
                             <div className="quest-reward-badge">
                                 <span className="reward-amount">+{quest.reward}</span>
-                                <span className="reward-label">TOUR</span>
+                                <span className="reward-label">SMT</span>
                             </div>
                         </div>
 
