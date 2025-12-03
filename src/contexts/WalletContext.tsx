@@ -1,6 +1,20 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { ethers } from 'ethers';
 
+const TOKEN_CONTRACT_ADDRESS = '0x6242c29bb832fd3ab692940fc23540cfa87ca971';
+const POLYGON_CHAIN_ID = '0x89'; // 137
+const POLYGON_NETWORK_CONFIG = {
+    chainId: POLYGON_CHAIN_ID,
+    chainName: 'Polygon Mainnet',
+    rpcUrls: ['https://polygon-rpc.com/'],
+    blockExplorerUrls: ['https://polygonscan.com/'],
+    nativeCurrency: {
+        name: 'MATIC',
+        symbol: 'MATIC',
+        decimals: 18,
+    },
+};
+
 interface WalletContextType {
     address: string | null;
     balance: string;
@@ -69,6 +83,28 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
                     method: 'eth_requestAccounts',
                 }) as string[];
 
+                // Switch to Polygon Network
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: POLYGON_CHAIN_ID }],
+                    });
+                } catch (switchError: any) {
+                    // This error code indicates that the chain has not been added to MetaMask.
+                    if (switchError.code === 4902) {
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [POLYGON_NETWORK_CONFIG],
+                            });
+                        } catch (addError) {
+                            console.error('Failed to add Polygon network', addError);
+                        }
+                    } else {
+                        console.error('Failed to switch to Polygon network', switchError);
+                    }
+                }
+
                 if (accounts.length > 0) {
                     const userAddress = accounts[0];
                     setAddress(userAddress);
@@ -106,8 +142,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             setBalance(ethers.formatEther(nativeBalance));
 
             // Get TOUR token balance
-            // TODO: Replace with actual token contract address
-            const tokenContractAddress = '0x...'; // Smartour Token contract
+            const tokenContractAddress = TOKEN_CONTRACT_ADDRESS;
             const tokenABI = [
                 'function balanceOf(address owner) view returns (uint256)',
             ];
@@ -181,7 +216,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
         try {
             const signer = await provider.getSigner();
-            const tokenContractAddress = '0x...'; // Smartour Token contract
+            const tokenContractAddress = TOKEN_CONTRACT_ADDRESS;
             const tokenABI = [
                 'function transfer(address to, uint256 amount) returns (bool)',
             ];
