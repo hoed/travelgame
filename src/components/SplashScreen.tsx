@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SplashScreen.css';
 
-interface SplashScreenProps {
-    onComplete: () => void;
-}
-
-const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
+const SplashScreen: React.FC = () => {
     const [stage, setStage] = useState(0);
 
     useEffect(() => {
@@ -14,11 +10,9 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
             setTimeout(() => setStage(2), 2000),
             setTimeout(() => setStage(3), 4000),
             setTimeout(() => setStage(4), 6000),
-            setTimeout(() => onComplete(), 8000),
         ];
-
         return () => timers.forEach(timer => clearTimeout(timer));
-    }, [onComplete]);
+    }, []);
 
     return (
         <div className="splash-screen">

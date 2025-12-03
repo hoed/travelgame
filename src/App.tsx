@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import SplashScreen from './components/SplashScreen';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { GameProvider } from './contexts/GameContext';
 import { WalletProvider } from './contexts/WalletContext';
@@ -16,6 +17,14 @@ import Navigation from './components/Navigation';
 import './App.css';
 
 function AppContent() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 6000); // 6 seconds splash
+    return () => clearTimeout(timer);
+  }, []);
   const [isOnboarded, setIsOnboarded] = useState(false);
 
   useEffect(() => {
@@ -28,6 +37,10 @@ function AppContent() {
     localStorage.setItem('onboarded', 'true');
     setIsOnboarded(true);
   };
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
   if (!isOnboarded) {
     return <Onboarding onComplete={handleOnboardingComplete} />;
