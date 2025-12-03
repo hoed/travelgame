@@ -79,7 +79,7 @@ const Profile = () => {
                                             : tokenBalance}
                                     </span>
                                     <span className="stat-label">
-                                        {useNonCryptoMode ? 'Game Credits' : 'TOUR Tokens'}
+                                        {useNonCryptoMode ? 'Game Credits' : 'SMT Tokens'}
                                     </span>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@ const Profile = () => {
                                     <p className="toggle-description">
                                         {useNonCryptoMode
                                             ? 'You are earning game credits instead of blockchain tokens'
-                                            : 'You are earning blockchain tokens (TOUR)'}
+                                            : 'You are earning blockchain tokens (SMT)'}
                                     </p>
                                 </div>
 
