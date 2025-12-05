@@ -138,8 +138,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             } else {
                 // Fallback: Use WalletConnect or show instructions
                 console.log('No Web3 provider found. Please install MetaMask or use WalletConnect.');
-                // For Telegram Mini App, we might use TON wallet or other alternatives
-                alert('Please connect a Web3 wallet to earn blockchain tokens. You can continue in non-crypto mode to earn in-game credits.');
+                console.log('You can continue in non-crypto mode to earn in-game credits.');
+                // Silently fail - user can enable non-crypto mode in settings
             }
         } catch (error) {
             console.error('Error connecting wallet:', error);
