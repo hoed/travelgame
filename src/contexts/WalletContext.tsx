@@ -136,10 +136,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
                     await updateBalances(web3Provider, userAddress);
                 }
             } else {
-                // Fallback: Use WalletConnect or show instructions
-                console.log('No Web3 provider found. Please install MetaMask or use WalletConnect.');
-                console.log('You can continue in non-crypto mode to earn in-game credits.');
-                // Silently fail - user can enable non-crypto mode in settings
+                // No Web3 provider found - user can enable non-crypto mode in settings
+                console.log('No Web3 provider found. You can enable non-crypto mode in Profile settings.');
             }
         } catch (error) {
             console.error('Error connecting wallet:', error);
