@@ -70,6 +70,18 @@ const translations: Translations = {
     'quest.tsunami_museum.description': { en: 'Learn about the 2004 tsunami at this memorial museum', id: 'Pelajari tentang tsunami 2004 di museum memorial ini' },
     'quest.mentawai.title': { en: 'Mentawai Islands Surf', id: 'Surfing Kepulauan Mentawai' },
     'quest.mentawai.description': { en: 'Experience world-class surfing in the Mentawai Islands', id: 'Rasakan surfing kelas dunia di Kepulauan Mentawai' },
+    'quest.ngarai_sianok.title': { en: 'Ngarai Sianok Canyon', id: 'Ngarai Sianok' },
+    'quest.ngarai_sianok.description': { en: 'Explore the stunning canyon in Bukittinggi', id: 'Jelajahi ngarai menakjubkan di Bukittinggi' },
+    'quest.ampera_bridge.title': { en: 'Ampera Bridge Palembang', id: 'Jembatan Ampera Palembang' },
+    'quest.ampera_bridge.description': { en: 'Visit the iconic bridge over Musi River', id: 'Kunjungi jembatan ikonik di atas Sungai Musi' },
+    'quest.nias_surf.title': { en: 'Nias Island Surfing', id: 'Surfing Pulau Nias' },
+    'quest.nias_surf.description': { en: 'Ride the legendary waves of Nias', id: 'Taklukkan ombak legendaris Nias' },
+    'quest.padang_beach.title': { en: 'Padang Beach Sunset', id: 'Sunset Pantai Padang' },
+    'quest.padang_beach.description': { en: 'Watch sunset at Air Manis Beach', id: 'Saksikan sunset di Pantai Air Manis' },
+    'quest.kerinci.title': { en: 'Kerinci Seblat National Park', id: 'Taman Nasional Kerinci Seblat' },
+    'quest.kerinci.description': { en: 'Trek through pristine rainforest', id: 'Trekking melalui hutan hujan yang masih alami' },
+    'quest.way_kambas.title': { en: 'Way Kambas Elephant Sanctuary', id: 'Suaka Gajah Way Kambas' },
+    'quest.way_kambas.description': { en: 'Meet Sumatran elephants in their sanctuary', id: 'Bertemu gajah Sumatera di suaka mereka' },
 
     // Quest Details - JAVA
     'quest.borobudur.title': { en: 'Borobudur Temple Sunrise', id: 'Sunrise Candi Borobudur' },
