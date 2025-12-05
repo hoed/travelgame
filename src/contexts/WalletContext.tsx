@@ -96,7 +96,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         setIsConnecting(true);
         try {
             // Check if running in Telegram WebView
-            if (typeof window.ethereum !== 'undefined') {
+            if (typeof window.ethereum !== 'undefined' && window.ethereum) {
                 const web3Provider = new ethers.BrowserProvider(window.ethereum);
                 setProvider(web3Provider);
 
@@ -120,7 +120,11 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
                             });
                         } catch (addError) {
                             console.error('Failed to add Polygon network', addError);
+                            throw new Error('Failed to add Polygon network. Please add it manually.');
                         }
+                    } else if (switchError.code === 4001) {
+                        // User rejected the request
+                        throw new Error('Please approve the network switch to continue.');
                     } else {
                         console.error('Failed to switch to Polygon network', switchError);
                     }
@@ -134,13 +138,20 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
                     // Get balances
                     await updateBalances(web3Provider, userAddress);
+                } else {
+                    throw new Error('No accounts found. Please unlock your wallet.');
                 }
             } else {
-                // No Web3 provider found - user can enable non-crypto mode in settings
-                console.log('No Web3 provider found. You can enable non-crypto mode in Profile settings.');
+                // No Web3 provider found
+                throw new Error('No Web3 wallet found. Please install MetaMask or use non-crypto mode.');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error connecting wallet:', error);
+            // Re-throw to let UI handle the error
+            if (error.code === 4001) {
+                throw new Error('Connection rejected. Please approve the connection request.');
+            }
+            throw error;
         } finally {
             setIsConnecting(false);
         }

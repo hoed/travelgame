@@ -24,33 +24,94 @@ function LocationUpdater() {
     const map = useMap();
     const { updateUserLocation } = useGame();
     const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
+    const [locationError, setLocationError] = useState<string | null>(null);
 
     useEffect(() => {
         if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition(
+            // First, check if we have permission
+            if ('permissions' in navigator) {
+                navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+                    if (result.state === 'denied') {
+                        setLocationError('Location access denied. Please enable location in your browser settings.');
+                    }
+                });
+            }
+
+            // Request current position with high accuracy
+            const watchId = navigator.geolocation.watchPosition(
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     setUserPosition([lat, lng]);
                     updateUserLocation(lat, lng);
-                    map.setView([lat, lng], 13);
+                    setLocationError(null);
+
+                    // Only center map on first location
+                    if (!userPosition) {
+                        map.setView([lat, lng], 13);
+                    }
                 },
                 (error) => {
                     console.error('Error getting location:', error);
-                    // Default to Sidoarjo, East Java
-                    const defaultPos: [number, number] = [-7.4479, 112.7186];
+                    let errorMessage = 'Unable to get your location. ';
+
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage += 'Please enable location access in your browser settings.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage += 'Location information is unavailable.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage += 'Location request timed out.';
+                            break;
+                        default:
+                            errorMessage += 'An unknown error occurred.';
+                    }
+
+                    setLocationError(errorMessage);
+
+                    // Default to Jakarta, Indonesia
+                    const defaultPos: [number, number] = [-6.2088, 106.8456];
                     setUserPosition(defaultPos);
-                    map.setView(defaultPos, 13);
+                    map.setView(defaultPos, 10);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
                 }
             );
+
+            // Cleanup
+            return () => {
+                navigator.geolocation.clearWatch(watchId);
+            };
+        } else {
+            setLocationError('Geolocation is not supported by your browser.');
+            // Default to Jakarta, Indonesia
+            const defaultPos: [number, number] = [-6.2088, 106.8456];
+            setUserPosition(defaultPos);
+            map.setView(defaultPos, 10);
         }
     }, [map, updateUserLocation]);
 
-    return userPosition ? (
-        <Marker position={userPosition}>
-            <Popup>You are here</Popup>
-        </Marker>
-    ) : null;
+    return (
+        <>
+            {userPosition && (
+                <Marker position={userPosition}>
+                    <Popup>
+                        <strong>📍 You are here</strong>
+                        {locationError && (
+                            <div style={{ marginTop: '8px', color: '#e74c3c', fontSize: '0.85rem' }}>
+                                {locationError}
+                            </div>
+                        )}
+                    </Popup>
+                </Marker>
+            )}
+        </>
+    );
 }
 
 const Map = () => {
