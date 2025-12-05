@@ -91,7 +91,7 @@ const Home = () => {
                     >
                         <div className="quest-header">
                             <h3>{t(dailyQuest.titleId)}</h3>
-                            <span className="quest-reward">+{dailyQuest.reward} TOUR</span>
+                            <span className="quest-reward">+{dailyQuest.reward} SMT</span>
                         </div>
                         <p>{t(dailyQuest.descriptionId)}</p>
                         <div className="quest-meta">

@@ -91,7 +91,7 @@ const Map = () => {
                                 <h3>{t(quest.titleId)}</h3>
                                 <p>{t(quest.descriptionId)}</p>
                                 <div className="popup-meta">
-                                    <span className="reward">+{quest.reward} TOUR</span>
+                                    <span className="reward">+{quest.reward} SMT</span>
                                     <span className={`difficulty ${quest.difficulty}`}>
                                         {t(`quest.difficulty.${quest.difficulty}`)}
                                     </span>

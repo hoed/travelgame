@@ -16,6 +16,23 @@ const Profile = () => {
     const unlockedAchievements = achievements.filter((a) => a.unlocked);
     const lockedAchievements = achievements.filter((a) => !a.unlocked);
 
+    // Traveler Rank System
+    const getTravelerRank = (level: number) => {
+        if (level >= 50) return { title: '🌟 Legendary Explorer', color: '#FFD700' };
+        if (level >= 40) return { title: '👑 Master Traveler', color: '#E5E4E2' };
+        if (level >= 30) return { title: '🗺️ Expert Navigator', color: '#CD7F32' };
+        if (level >= 20) return { title: '🧭 Seasoned Adventurer', color: '#4169E1' };
+        if (level >= 10) return { title: '🎒 Experienced Backpacker', color: '#32CD32' };
+        if (level >= 5) return { title: '🚶 Active Wanderer', color: '#FF6347' };
+        return { title: '🌱 Novice Explorer', color: '#9370DB' };
+    };
+
+    const travelerRank = getTravelerRank(userStats.level);
+
+    // Calculate journey stats
+    const totalDistance = userStats.placesVisited * 25; // Estimate km traveled
+    const regionsExplored = Math.min(Math.floor(userStats.placesVisited / 3), 8); // Max 8 regions
+
     return (
         <div className="profile-container">
             <div className="profile-header">
@@ -27,8 +44,14 @@ const Profile = () => {
                             {userName.charAt(0).toUpperCase()}
                         </div>
                     )}
+                    <div className="avatar-badge" style={{ background: travelerRank.color }}>
+                        {travelerRank.title.split(' ')[0]}
+                    </div>
                 </div>
                 <h1>{userName}</h1>
+                <p className="traveler-rank" style={{ color: travelerRank.color }}>
+                    {travelerRank.title}
+                </p>
                 <div className="profile-level">
                     <span className="level-badge">Level {userStats.level}</span>
                     <div className="xp-bar">
@@ -42,6 +65,18 @@ const Profile = () => {
                     <span className="xp-text">
                         {userStats.xp} / {userStats.xpToNextLevel} XP
                     </span>
+                </div>
+                <div className="journey-stats">
+                    <div className="journey-stat">
+                        <span className="journey-icon">🗺️</span>
+                        <span className="journey-value">{regionsExplored}/8</span>
+                        <span className="journey-label">Regions</span>
+                    </div>
+                    <div className="journey-stat">
+                        <span className="journey-icon">🛣️</span>
+                        <span className="journey-value">{totalDistance}km</span>
+                        <span className="journey-label">Traveled</span>
+                    </div>
                 </div>
             </div>
 
@@ -79,7 +114,7 @@ const Profile = () => {
                                             : tokenBalance}
                                     </span>
                                     <span className="stat-label">
-                                        {useNonCryptoMode ? 'Game Credits' : 'TOUR Tokens'}
+                                        {useNonCryptoMode ? 'Game Credits' : 'SMT Tokens'}
                                     </span>
                                 </div>
                             </div>
@@ -208,7 +243,7 @@ const Profile = () => {
                                     <p className="toggle-description">
                                         {useNonCryptoMode
                                             ? 'You are earning game credits instead of blockchain tokens'
-                                            : 'You are earning blockchain tokens (TOUR)'}
+                                            : 'You are earning blockchain tokens (SMT)'}
                                     </p>
                                 </div>
 
@@ -220,7 +255,7 @@ const Profile = () => {
                                                     {address?.slice(0, 6)}...{address?.slice(-4)}
                                                 </p>
                                                 <p className="wallet-balance">
-                                                    {tokenBalance} TOUR
+                                                    {tokenBalance} SMT
                                                 </p>
                                                 <button
                                                     className="btn-secondary"

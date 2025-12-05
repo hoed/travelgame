@@ -30,7 +30,7 @@ const translations: Translations = {
     'onboarding.step1.title': { en: 'Discover Places', id: 'Temukan Tempat' },
     'onboarding.step1.desc': { en: 'Explore amazing destinations across Indonesia', id: 'Jelajahi destinasi menakjubkan di seluruh Indonesia' },
     'onboarding.step2.title': { en: 'Complete Quests', id: 'Selesaikan Misi' },
-    'onboarding.step2.desc': { en: 'Take on challenges and earn TOUR tokens', id: 'Ambil tantangan dan dapatkan token TOUR' },
+    'onboarding.step2.desc': { en: 'Take on challenges and earn SMT tokens', id: 'Ambil tantangan dan dapatkan token SMT' },
     'onboarding.step3.title': { en: 'Get Rewards', id: 'Dapatkan Hadiah' },
     'onboarding.step3.desc': { en: 'Redeem tokens for discounts and vouchers', id: 'Tukarkan token untuk diskon dan voucher' },
     'onboarding.next': { en: 'Next', id: 'Lanjut' },
@@ -81,7 +81,7 @@ const translations: Translations = {
     'achievement.social_butterfly.name': { en: 'Social Butterfly', id: 'Kupu-kupu Sosial' },
     'achievement.social_butterfly.description': { en: 'Share 3 experiences on social media', id: 'Bagikan 3 pengalaman di media sosial' },
     'achievement.token_collector.name': { en: 'Token Collector', id: 'Kolektor Token' },
-    'achievement.token_collector.description': { en: 'Earn 500 TOUR tokens', id: 'Dapatkan 500 token TOUR' },
+    'achievement.token_collector.description': { en: 'Earn 500 SMT tokens', id: 'Dapatkan 500 token SMT' },
     'achievement.week_warrior.name': { en: 'Week Warrior', id: 'Pejuang Mingguan' },
     'achievement.week_warrior.description': { en: 'Maintain a 7-day streak', id: 'Pertahankan streak 7 hari' },
 

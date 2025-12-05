@@ -57,14 +57,35 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         const nonCryptoMode = localStorage.getItem('nonCryptoMode');
         if (nonCryptoMode === 'true') {
             setUseNonCryptoMode(true);
+            return;
         }
 
         // Check if wallet was previously connected
         const savedAddress = localStorage.getItem('walletAddress');
-        if (savedAddress && !useNonCryptoMode) {
-            connectWallet();
+        if (savedAddress && typeof window.ethereum !== 'undefined' && window.ethereum) {
+            // Auto-reconnect on page load
+            const reconnect = async () => {
+                try {
+                    if (!window.ethereum) return;
+                    const web3Provider = new ethers.BrowserProvider(window.ethereum);
+                    const accounts = await web3Provider.listAccounts();
+                    if (accounts.length > 0) {
+                        setProvider(web3Provider);
+                        setAddress(savedAddress);
+                        setIsConnected(true);
+                        await updateBalances(web3Provider, savedAddress);
+                    } else {
+                        // Clear saved address if no accounts found
+                        localStorage.removeItem('walletAddress');
+                    }
+                } catch (error) {
+                    console.error('Error reconnecting wallet:', error);
+                    localStorage.removeItem('walletAddress');
+                }
+            };
+            reconnect();
         }
-    }, []);
+    }, []); // Empty dependency array - only run once on mount
 
     const connectWallet = async () => {
         if (useNonCryptoMode) {
@@ -141,7 +162,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             const nativeBalance = await web3Provider.getBalance(userAddress);
             setBalance(ethers.formatEther(nativeBalance));
 
-            // Get TOUR token balance
+            // Get SMT token balance
             const tokenContractAddress = TOKEN_CONTRACT_ADDRESS;
             const tokenABI = [
                 'function balanceOf(address owner) view returns (uint256)',

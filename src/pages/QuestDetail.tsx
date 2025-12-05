@@ -58,7 +58,7 @@ const QuestDetail = () => {
                     <div className="info-grid">
                         <div className="info-item">
                             <span className="info-label">Reward</span>
-                            <span className="info-value">+{quest.reward} TOUR</span>
+                            <span className="info-value">+{quest.reward} SMT</span>
                         </div>
                         <div className="info-item">
                             <span className="info-label">Difficulty</span>

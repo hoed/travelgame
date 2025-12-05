@@ -175,7 +175,7 @@ const CheckIn = () => {
                     <div className="checkin-result success">
                         <div className="result-icon">✓</div>
                         <h2>{t('checkin.success')}</h2>
-                        <p>You earned +{quest.reward} TOUR tokens!</p>
+                        <p>You earned +{quest.reward} SMT tokens!</p>
                         <div className="confetti">🎉</div>
                     </div>
                 )}

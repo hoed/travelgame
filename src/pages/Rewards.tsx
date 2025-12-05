@@ -138,7 +138,7 @@ const Rewards = () => {
                     <div className="balance-info">
                         <span className="balance-label">Your Balance</span>
                         <span className="balance-value">
-                            {currentBalance.toFixed(0)} {useNonCryptoMode ? 'Credits' : 'TOUR'}
+                            {currentBalance.toFixed(0)} {useNonCryptoMode ? 'Credits' : 'SMT'}
                         </span>
                     </div>
                     {pendingTokens > 0 && (
@@ -173,7 +173,7 @@ const Rewards = () => {
                                         <div className="reward-cost">
                                             <span className="cost-value">{reward.cost}</span>
                                             <span className="cost-label">
-                                                {useNonCryptoMode ? 'Credits' : 'TOUR'}
+                                                {useNonCryptoMode ? 'Credits' : 'SMT'}
                                             </span>
                                         </div>
                                         <button
@@ -214,14 +214,14 @@ const Rewards = () => {
                             <div className="modal-cost">
                                 <span>Cost:</span>
                                 <span className="cost-amount">
-                                    {selectedReward.cost} {useNonCryptoMode ? 'Credits' : 'TOUR'}
+                                    {selectedReward.cost} {useNonCryptoMode ? 'Credits' : 'SMT'}
                                 </span>
                             </div>
 
                             <div className="modal-balance">
                                 <span>Your Balance:</span>
                                 <span className="balance-amount">
-                                    {currentBalance.toFixed(0)} {useNonCryptoMode ? 'Credits' : 'TOUR'}
+                                    {currentBalance.toFixed(0)} {useNonCryptoMode ? 'Credits' : 'SMT'}
                                 </span>
                             </div>
 
@@ -229,7 +229,7 @@ const Rewards = () => {
                                 <span>After Redemption:</span>
                                 <span className="remaining-amount">
                                     {(currentBalance - selectedReward.cost).toFixed(0)}{' '}
-                                    {useNonCryptoMode ? 'Credits' : 'TOUR'}
+                                    {useNonCryptoMode ? 'Credits' : 'SMT'}
                                 </span>
                             </div>
                         </div>

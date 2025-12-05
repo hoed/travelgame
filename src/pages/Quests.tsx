@@ -5,7 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import './Quests.css';
 
 const Quests = () => {
-    const { quests } = useGame();
+    const { quests, currentRegion, setCurrentRegion } = useGame();
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
@@ -45,6 +45,25 @@ const Quests = () => {
             </header>
 
             <div className="quests-controls">
+                <div className="region-selector">
+                    <label htmlFor="region-select">Region:</label>
+                    <select
+                        id="region-select"
+                        className="region-select"
+                        value={currentRegion}
+                        onChange={(e) => setCurrentRegion(e.target.value)}
+                    >
+                        <option value="sumatra">Sumatra</option>
+                        <option value="java">Java</option>
+                        <option value="bali">Bali</option>
+                        <option value="kalimantan">Kalimantan</option>
+                        <option value="sulawesi">Sulawesi</option>
+                        <option value="nusa-tenggara">Nusa Tenggara</option>
+                        <option value="maluku">Maluku</option>
+                        <option value="papua">Papua</option>
+                    </select>
+                </div>
+
                 <div className="filter-buttons">
                     <button
                         className={filter === 'all' ? 'active' : ''}
@@ -91,7 +110,7 @@ const Quests = () => {
                             </div>
                             <div className="quest-reward-badge">
                                 <span className="reward-amount">+{quest.reward}</span>
-                                <span className="reward-label">TOUR</span>
+                                <span className="reward-label">SMT</span>
                             </div>
                         </div>
 

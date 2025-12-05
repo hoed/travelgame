@@ -20,7 +20,7 @@ const SplashScreen: React.FC = () => {
                 {/* Stage 1: Logo appears */}
                 <div className={`logo-container ${stage >= 1 ? 'visible' : ''}`}>
                     <div className="logo-circle">
-                        <span className="logo-icon">🌏</span>
+                        <img src="/logo.png" alt="Smartour Logo" className="logo-image" />
                     </div>
                     <h1 className="logo-text">Smartour</h1>
                 </div>
@@ -39,7 +39,7 @@ const SplashScreen: React.FC = () => {
                             <span className="token-icon">💎</span>
                             <div className="token-info">
                                 <span className="token-name">Smartour Token</span>
-                                <span className="token-symbol">TOUR</span>
+                                <span className="token-symbol">SMT</span>
                             </div>
                         </div>
                     </div>
