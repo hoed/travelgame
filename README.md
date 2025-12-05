@@ -21,7 +21,8 @@ Smartour gamifies travel experiences across Indonesia, from the volcanic peaks o
 
 ### 🗺️ **Multi-Region Quest System**
 - **8 Major Regions**: Sumatra, Java, Bali, Kalimantan, Sulawesi, Nusa Tenggara, Maluku, Papua
-- **26+ Unique Quests**: From easy city visits to challenging mountain treks
+- **41+ Active Quests**: Currently implemented across all regions
+- **107 Total Destinations**: Full coverage planned (see QUEST_DATABASE.md)
 - **Cultural Destinations**: Temples, natural wonders, traditional villages, and UNESCO sites
 - **Dynamic Difficulty**: Easy, Medium, and Hard quests with varying rewards
 
