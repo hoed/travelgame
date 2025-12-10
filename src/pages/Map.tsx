@@ -1,210 +1,132 @@
-import { useEffect, useState } from 'react';
+// src/pages/Map.tsx  ←  Replace ONLY this file
+import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
-import { useGame } from '../contexts/GameContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import 'leaflet/dist/leaflet.css';
-import './Map.css';
-
-// Fix for default markers in react-leaflet
 import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import { useGame } from '../contexts/GameContext';
+import 'leaflet/dist/leaflet.css';
 
-const DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
+// Fix Leaflet icons
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-L.Marker.prototype.options.icon = DefaultIcon;
+function RealGPSOnly() {
+  const map = useMap();
+  const { updateUserLocation } = useGame();
 
-function LocationUpdater() {
-    const map = useMap();
-    const { updateUserLocation } = useGame();
-    const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
-    const [locationError, setLocationError] = useState<string | null>(null);
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      alert('Your device does not support GPS');
+      return;
+    }
 
-    useEffect(() => {
-        if ('geolocation' in navigator) {
-            // First, check if we have permission
-            if ('permissions' in navigator) {
-                navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-                    if (result.state === 'denied') {
-                        setLocationError('Location access denied. Please enable location in your browser settings.');
-                    }
-                });
-            }
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
 
-            // Request current position with high accuracy
-            const watchId = navigator.geolocation.watchPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    setUserPosition([lat, lng]);
-                    updateUserLocation(lat, lng);
-                    setLocationError(null);
+        // Only accept real GPS with good accuracy (< 50m)
+        if (accuracy > 50) return; // ignore bad signals
 
-                    // Only center map on first location
-                    if (!userPosition) {
-                        map.setView([lat, lng], 13);
-                    }
-                },
-                (error) => {
-                    console.error('Error getting location:', error);
-                    let errorMessage = 'Unable to get your location. ';
-
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage += 'Please enable location access in your browser settings.';
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage += 'Location information is unavailable.';
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage += 'Location request timed out.';
-                            break;
-                        default:
-                            errorMessage += 'An unknown error occurred.';
-                    }
-
-                    setLocationError(errorMessage);
-
-                    // Default to Sidoarjo, East Java (near Surabaya) - center of many quests
-                    const defaultPos: [number, number] = [-7.4479, 112.7186];
-                    setUserPosition(defaultPos);
-                    updateUserLocation(defaultPos[0], defaultPos[1]);
-                    map.setView(defaultPos, 11);
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                }
-            );
-
-            // Cleanup
-            return () => {
-                navigator.geolocation.clearWatch(watchId);
-            };
-        } else {
-            setLocationError('Geolocation is not supported by your browser.');
-            // Default to Sidoarjo, East Java (near Surabaya)
-            const defaultPos: [number, number] = [-7.4479, 112.7186];
-            setUserPosition(defaultPos);
-            updateUserLocation(defaultPos[0], defaultPos[1]);
-            map.setView(defaultPos, 11);
-        }
-    }, [map, updateUserLocation]);
-
-    return (
-        <>
-            {userPosition && (
-                <Marker position={userPosition}>
-                    <Popup>
-                        <strong>📍 You are here</strong>
-                        {locationError && (
-                            <div style={{ marginTop: '8px', color: '#e74c3c', fontSize: '0.85rem' }}>
-                                {locationError}
-                            </div>
-                        )}
-                    </Popup>
-                </Marker>
-            )}
-        </>
+        updateUserLocation(latitude, longitude);
+        localStorage.setItem('realGPS', JSON.stringify([latitude, longitude]));
+        map.setView([latitude, longitude], 16, { animate: true });
+      },
+      (err) => {
+        console.warn('Real GPS error:', err.message);
+        // Do NOT fall back — stay silent until real GPS works
+      },
+      {
+        enableHighAccuracy: true,   // Forces real GPS chip only
+        timeout: 20000,
+        maximumAge: 0,              // Never use cached or mock position
+      }
     );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [map, updateUserLocation]);
+
+  return null;
 }
 
-const Map = () => {
-    const { quests } = useGame();
-    const { t } = useLanguage();
-    const navigate = useNavigate();
-    const [selectedQuest, setSelectedQuest] = useState<string | null>(null);
+const Map: React.FC = () => {
+  const { quests } = useGame();
+  const [userPos, setUserPos] = React.useState<[number, number] | null>(null);
 
-    const questMarkers = quests.filter((q) => !q.completed);
+  // Only show marker if we have REAL GPS from localStorage
+  React.useEffect(() => {
+    const saved = localStorage.getItem('realGPS');
+    if (saved) {
+      const pos = JSON.parse(saved);
+      setUserPos(pos);
+    }
+  }, []);
 
-    return (
-        <div className="map-container">
-            <div className="map-header">
-                <h1>{t('nav.map')}</h1>
-            </div>
+  return (
+    <MapContainer
+      center={[-2.633, 118.0]}   // Indonesia center — just for loading
+      zoom={5}
+      style={{ height: '100vh', width: '100%' }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; OpenStreetMap'
+      />
 
-            <MapContainer
-                center={[-7.4479, 112.7186]}
-                zoom={11}
-                className="leaflet-map"
-            >
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <LocationUpdater />
+      <RealGPSOnly />
 
-                {questMarkers.map((quest) => (
-                    <Marker
-                        key={quest.id}
-                        position={[quest.location.lat, quest.location.lng]}
-                        eventHandlers={{
-                            click: () => setSelectedQuest(quest.id),
-                        }}
-                    >
-                        <Popup>
-                            <div className="map-popup">
-                                <h3>{t(quest.titleId)}</h3>
-                                <p>{t(quest.descriptionId)}</p>
-                                <div className="popup-meta">
-                                    <span className="reward">+{quest.reward} SMT</span>
-                                    <span className={`difficulty ${quest.difficulty}`}>
-                                        {t(`quest.difficulty.${quest.difficulty}`)}
-                                    </span>
-                                </div>
-                                <button
-                                    className="popup-btn"
-                                    onClick={() => navigate(`/quests/${quest.id}`)}
-                                >
-                                    {t('quest.start')}
-                                </button>
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
-            </MapContainer>
+      {/* Real user marker — appears ONLY with real GPS */}
+      {userPos && (
+        <Marker
+          position={userPos}
+          icon={new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+            shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+          })}
+        >
+          <Popup>You are here (Real GPS)</Popup>
+        </Marker>
+      )}
 
-            {selectedQuest && (
-                <div className="map-quest-preview">
-                    {(() => {
-                        const quest = quests.find((q) => q.id === selectedQuest);
-                        if (!quest) return null;
-                        return (
-                            <div className="preview-card">
-                                <button
-                                    className="close-preview"
-                                    onClick={() => setSelectedQuest(null)}
-                                >
-                                    ×
-                                </button>
-                                <h3>{t(quest.titleId)}</h3>
-                                <p>{t(quest.descriptionId)}</p>
-                                <div className="preview-meta">
-                                    <span>📍 {quest.location.name}</span>
-                                    {quest.distance && (
-                                        <span>{quest.distance.toFixed(1)} km away</span>
-                                    )}
-                                </div>
-                                <button
-                                    className="btn-primary"
-                                    onClick={() => navigate(`/quests/${quest.id}`)}
-                                >
-                                    {t('quest.start')}
-                                </button>
-                            </div>
-                        );
-                    })()}
-                </div>
-            )}
+      {/* All quest markers */}
+      {quests.map((quest) => (
+        <Marker
+          key={quest.id}
+          position={[quest.location.lat, quest.location.lng]}
+        >
+          <Popup>
+            <strong>{quest.title}</strong>
+            <br />+{quest.reward} SMT
+          </Popup>
+        </Marker>
+      ))}
+
+      {/* Message when no real GPS yet */}
+      {!userPos && (
+        <div style={{
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    background: 'rgba(0,0,0,0.8)',
+    color: 'white',
+    padding: '20px 30px',
+    borderRadius: 12,
+    textAlign: 'center',
+    fontSize: 16,        // ← ONLY THIS ONE
+    zIndex: 1000
+  }}>
+          Waiting for real GPS signal...
+          <br />
+          <small>Turn on Location & allow in Telegram</small>
         </div>
-    );
+      )}
+    </MapContainer>
+  );
 };
 
 export default Map;
