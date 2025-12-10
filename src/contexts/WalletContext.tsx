@@ -1,3 +1,4 @@
+// src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
@@ -9,6 +10,7 @@ interface WalletContextType {
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
   toggleNonCryptoMode: () => void;
+  claimTokens: (amount: number) => Promise<boolean>;   // ← THIS WAS MISSING
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -54,11 +56,28 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (newMode) disconnectWallet();
   };
 
-  // Optional: fetch real balance when connected
+  // ← THIS IS THE FUNCTION Rewards.tsx WAS LOOKING FOR
+  const claimTokens = async (amount: number): Promise<boolean> => {
+    if (useNonCryptoMode) {
+      // In non-crypto mode: just add to local balance
+      setTokenBalance(prev => String(Number(prev) + amount));
+      return true;
+    }
+
+    if (!address) {
+      alert('Connect wallet first!');
+      return false;
+    }
+
+    // TODO: Replace with real contract call when ready
+    alert(`Claimed ${amount} SMT! (Real tx coming soon)`);
+    setTokenBalance(prev => String(Number(prev) + amount));
+    return true;
+  };
+
   useEffect(() => {
     if (address && !useNonCryptoMode) {
-      // Replace with real token contract call later
-      setTokenBalance('0'); // placeholder
+      setTokenBalance('0'); // placeholder — replace with real fetch later
     }
   }, [address, useNonCryptoMode]);
 
@@ -72,6 +91,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         connectWallet,
         disconnectWallet,
         toggleNonCryptoMode,
+        claimTokens,                 // ← NOW INCLUDED
       }}
     >
       {children}
