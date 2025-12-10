@@ -108,18 +108,18 @@ const Map: React.FC = () => {
       {/* Message when no real GPS yet */}
       {!userPos && (
         <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'rgba(0,0,0,0.8)',
-          color: 'white',
-          padding: '20px 30px',
-          borderRadius: 12,
-          fontSize: 1000,
-          textAlign: 'center',
-          fontSize: 16,
-        }}>
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    background: 'rgba(0,0,0,0.8)',
+    color: 'white',
+    padding: '20px 30px',
+    borderRadius: 12,
+    textAlign: 'center',
+    fontSize: 16,        // ← ONLY THIS ONE
+    zIndex: 1000
+  }}>
           Waiting for real GPS signal...
           <br />
           <small>Turn on Location & allow in Telegram</small>
