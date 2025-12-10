@@ -1,11 +1,11 @@
-// src/pages/Map.tsx  ←  Replace ONLY this file
-import React, { useEffect } from 'react';
+// src/pages/Map.tsx  ←  REPLACE ENTIRE FILE WITH THIS
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useGame } from '../contexts/GameContext';
 import 'leaflet/dist/leaflet.css';
 
-// Fix Leaflet icons
+// Fix Leaflet default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -19,7 +19,7 @@ function RealGPSOnly() {
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      alert('Your device does not support GPS');
+      console.warn('Geolocation not supported');
       return;
     }
 
@@ -27,21 +27,21 @@ function RealGPSOnly() {
       (position) => {
         const { latitude, longitude, accuracy } = position.coords;
 
-        // Only accept real GPS with good accuracy (< 50m)
-        if (accuracy > 50) return; // ignore bad signals
+        console.log(`GPS received: ${latitude}, ${longitude} (accuracy: ${accuracy}m)`);
 
+        // REMOVED THE TOO-STRICT 50m CHECK
+        // Real phones often start with 80–200m accuracy → now we accept it
         updateUserLocation(latitude, longitude);
         localStorage.setItem('realGPS', JSON.stringify([latitude, longitude]));
         map.setView([latitude, longitude], 16, { animate: true });
       },
       (err) => {
-        console.warn('Real GPS error:', err.message);
-        // Do NOT fall back — stay silent until real GPS works
+        console.warn('GPS error:', err.message);
       },
       {
-        enableHighAccuracy: true,   // Forces real GPS chip only
+        enableHighAccuracy: true,   // Still forces real GPS chip
         timeout: 20000,
-        maximumAge: 0,              // Never use cached or mock position
+        maximumAge: 0,              // No cache, no mock
       }
     );
 
@@ -53,10 +53,10 @@ function RealGPSOnly() {
 
 const Map: React.FC = () => {
   const { quests } = useGame();
-  const [userPos, setUserPos] = React.useState<[number, number] | null>(null);
+  const [userPos, setUserPos] = useState<[number, number] | null>(null);
 
-  // Only show marker if we have REAL GPS from localStorage
-  React.useEffect(() => {
+  // Load saved real GPS on start
+  useEffect(() => {
     const saved = localStorage.getItem('realGPS');
     if (saved) {
       const pos = JSON.parse(saved);
@@ -66,7 +66,7 @@ const Map: React.FC = () => {
 
   return (
     <MapContainer
-      center={[-2.633, 118.0]}   // Indonesia center — just for loading
+      center={[-2.633, 118.0]}
       zoom={5}
       style={{ height: '100vh', width: '100%' }}
     >
@@ -77,7 +77,7 @@ const Map: React.FC = () => {
 
       <RealGPSOnly />
 
-      {/* Real user marker — appears ONLY with real GPS */}
+      {/* Blue dot — appears as soon as we get ANY real GPS */}
       {userPos && (
         <Marker
           position={userPos}
@@ -92,7 +92,7 @@ const Map: React.FC = () => {
         </Marker>
       )}
 
-      {/* All quest markers */}
+      {/* Quest markers */}
       {quests.map((quest) => (
         <Marker
           key={quest.id}
@@ -105,24 +105,28 @@ const Map: React.FC = () => {
         </Marker>
       ))}
 
-      {/* Message when no real GPS yet */}
+      {/* Waiting message — disappears automatically when GPS arrives */}
       {!userPos && (
         <div style={{
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    background: 'rgba(0,0,0,0.8)',
-    color: 'white',
-    padding: '20px 30px',
-    borderRadius: 12,
-    textAlign: 'center',
-    fontSize: 16,        // ← ONLY THIS ONE
-    zIndex: 1000
-  }}>
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          background: 'rgba(0,0,0,0.85)',
+          color: 'white',
+          padding: '24px 32px',
+          borderRadius: 16,
+          textAlign: 'center',
+          fontSize: 18,
+          fontWeight: 'bold',
+          zIndex: 1000,
+          boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+        }}>
           Waiting for real GPS signal...
           <br />
-          <small>Turn on Location & allow in Telegram</small>
+          <small style={{ fontWeight: 'normal', opacity: 0.9 }}>
+            Turn on Location ON & allow in Telegram
+          </small>
         </div>
       )}
     </MapContainer>
