@@ -118,7 +118,7 @@ const Map: React.FC = () => {
           borderRadius: 12,
           fontSize: 1000,
           textAlign: 'center',
-          fontSize: 16
+          fontSize: 16,
         }}>
           Waiting for real GPS signal...
           <br />
