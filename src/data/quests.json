@@ -1,0 +1,54 @@
+{
+  "java": [
+    {
+      "id": "jv-001",
+      "title": "Borobudur Temple Sunrise",
+      "titleId": "quest.borobudur.title",
+      "description": "Witness sunrise at the world's largest Buddhist temple",
+      "descriptionId": "quest.borobudur.description",
+      "location": { "name": "Borobudur", "lat": -7.6079, "lng": 110.2038 },
+      "reward": 250,
+      "difficulty": "medium",
+      "type": "visit",
+      "region": "java"
+    },
+    {
+      "id": "jv-002",
+      "title": "Prambanan Temple",
+      "titleId": "quest.prambanan.title",
+      "description": "Explore the stunning Hindu temple complex",
+      "descriptionId": "quest.prambanan.description",
+      "location": { "name": "Prambanan", "lat": -7.7520, "lng": 110.4915 },
+      "reward": 180,
+      "difficulty": "easy",
+      "type": "visit",
+      "region": "java"
+    },
+    {
+      "id": "jv-010",
+      "title": "Surabaya Submarine Monument",
+      "titleId": "quest.submarine.title",
+      "description": "Visit the real KRI Pasopati submarine museum",
+      "descriptionId": "quest.submarine.description",
+      "location": { "name": "Monumen Kapal Selam", "lat": -7.2653, "lng": 112.7508 },
+      "reward": 120,
+      "difficulty": "easy",
+      "type": "photo",
+      "region": "java"
+    }
+  ],
+  "bali": [
+    {
+      "id": "bl-001",
+      "title": "Uluwatu Temple Sunset",
+      "titleId": "quest.uluwatu.title",
+      "description": "Watch sunset with Kecak dance at Uluwatu",
+      "descriptionId": "quest.uluwatu.description",
+      "location": { "name": "Uluwatu Temple", "lat": -8.8166, "lng": 115.0852 },
+      "reward": 300,
+      "difficulty": "medium",
+      "type": "photo",
+      "region": "bali"
+    }
+  ]
+}
