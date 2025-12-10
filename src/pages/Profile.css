@@ -1,46 +1,74 @@
-/* Profile.css */
+/* Profile.css - Futuristic Design */
 .profile-container {
     padding: var(--spacing-lg);
     padding-bottom: 100px;
+    animation: fadeIn 0.5s ease-in;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Profile Header */
 .profile-header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
+    position: relative;
 }
 
 .profile-avatar {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    margin: 0 auto var(--spacing-md);
+    margin: 0 auto var(--spacing-lg);
     overflow: hidden;
-    border: 4px solid var(--primary);
+    position: relative;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 4px;
+    box-shadow: 
+        0 0 30px rgba(0, 212, 255, 0.4),
+        0 0 60px rgba(0, 212, 255, 0.2);
+    animation: avatarGlow 3s ease-in-out infinite;
+}
+
+@keyframes avatarGlow {
+    0%, 100% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), 0 0 60px rgba(0, 212, 255, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.3); }
 }
 
 .profile-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .avatar-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
+    border-radius: 50%;
+    font-family: var(--font-display);
 }
 
 .profile-header h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: var(--spacing-md);
 }
 
+/* Level Badge */
 .profile-level {
     display: flex;
     flex-direction: column;
@@ -49,26 +77,56 @@
 }
 
 .level-badge {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.875rem;
+    padding: 8px 24px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: var(--font-display);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.level-badge::before {
+    content: '⭐';
+    font-size: 1.25rem;
 }
 
 .xp-bar {
-    width: 200px;
-    height: 8px;
-    background: var(--gray-200);
-    border-radius: 4px;
+    width: 250px;
+    height: 10px;
+    background: rgba(99, 102, 241, 0.2);
+    border-radius: 5px;
     overflow: hidden;
+    position: relative;
 }
 
 .xp-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--primary-light));
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.5s ease;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--primary);
+    position: relative;
+}
+
+.xp-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .xp-text {
@@ -76,29 +134,58 @@
     color: var(--text-secondary);
 }
 
+/* Profile Tabs */
 .profile-tabs {
     display: flex;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
-    background: var(--bg-tertiary);
+    gap: var(--spacing-xs);
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
     padding: 4px;
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-xl);
 }
 
 .profile-tabs button {
     flex: 1;
-    padding: 10px;
+    padding: 12px 16px;
     border-radius: var(--border-radius-sm);
     background: transparent;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     font-weight: 600;
     font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-tabs button:hover {
+    color: var(--text-primary);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .profile-tabs button.active {
-    background: var(--bg-primary);
-    color: var(--primary);
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+/* Stats Section */
+.stats-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.stats-section h2 {
+    font-size: 1.25rem;
+    font-family: var(--font-display);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.stats-section h2::before {
+    content: '📊';
 }
 
 .stats-grid {
@@ -107,202 +194,303 @@
     gap: var(--spacing-md);
 }
 
-.stat-box {
-    background: var(--bg-primary);
-    border-radius: var(--border-radius);
+.stat-item {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
     padding: var(--spacing-lg);
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.stat-box .stat-icon {
-    font-size: 2.5rem;
+.stat-item:hover {
+    border-color: var(--border-glow);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-.stat-info {
-    flex: 1;
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 
-.stat-info .stat-value {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+    animation: iconFloat 3s ease-in-out infinite;
 }
 
-.stat-info .stat-label {
-    display: block;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Achievements Section */
 .achievements-section {
     margin-bottom: var(--spacing-xl);
 }
 
-.achievements-section h3 {
-    font-size: 1.125rem;
+.achievements-section h2 {
+    font-size: 1.25rem;
+    font-family: var(--font-display);
     margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.achievements-section h2::before {
+    content: '🏆';
 }
 
 .achievements-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: var(--spacing-md);
 }
 
 .achievement-item {
-    background: var(--bg-primary);
-    border-radius: var(--border-radius);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
     padding: var(--spacing-lg);
-    box-shadow: var(--shadow);
     text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.achievement-item.unlocked {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(255, 217, 61, 0.2);
 }
 
 .achievement-item.locked {
     opacity: 0.5;
+    filter: grayscale(1);
 }
 
-.achievement-icon-large {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-md);
+.achievement-item:hover {
+    transform: translateY(-4px);
 }
 
-.achievement-icon-large.grayscale {
-    filter: grayscale(100%);
-}
-
-.achievement-item h4 {
-    font-size: 1rem;
+.achievement-icon {
+    font-size: 2.5rem;
     margin-bottom: var(--spacing-sm);
 }
 
-.achievement-item p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+.achievement-item.unlocked .achievement-icon {
+    animation: achievementPulse 2s ease-in-out infinite;
 }
 
-.unlock-date {
-    display: block;
-    margin-top: var(--spacing-sm);
+@keyframes achievementPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.achievement-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.achievement-desc {
     font-size: 0.75rem;
     color: var(--text-tertiary);
 }
 
+/* Settings Section */
 .settings-section {
-    background: var(--bg-primary);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.settings-section h2 {
+    font-size: 1.25rem;
+    font-family: var(--font-display);
     margin-bottom: var(--spacing-md);
-    box-shadow: var(--shadow);
-}
-
-.settings-section h3 {
-    font-size: 1.125rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.language-options {
-    display: flex;
-    gap: var(--spacing-md);
-}
-
-.language-btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    font-weight: 600;
-    border: 2px solid transparent;
-}
-
-.language-btn.active {
-    border-color: var(--primary);
-    background: rgba(37, 99, 235, 0.1);
-    color: var(--primary);
-}
-
-.wallet-mode-toggle {
-    margin-bottom: var(--spacing-lg);
-}
-
-.toggle-label {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
-    cursor: pointer;
+    gap: var(--spacing-sm);
 }
 
-.toggle-label input[type="checkbox"] {
-    display: none;
+.settings-section h2::before {
+    content: '⚙️';
 }
 
-.toggle-slider {
-    width: 50px;
-    height: 28px;
-    background: var(--gray-300);
-    border-radius: 14px;
-    position: relative;
-    transition: var(--transition);
-}
-
-.toggle-slider::before {
-    content: "";
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    background: white;
-    border-radius: 50%;
-    top: 3px;
-    left: 3px;
-    transition: var(--transition);
-}
-
-.toggle-label input[type="checkbox"]:checked+.toggle-slider {
-    background: var(--primary);
-}
-
-.toggle-label input[type="checkbox"]:checked+.toggle-slider::before {
-    transform: translateX(22px);
-}
-
-.toggle-text {
-    font-weight: 600;
-}
-
-.toggle-description {
-    margin-top: var(--spacing-sm);
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
-.wallet-connected {
+.settings-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
 }
 
-.wallet-address {
-    font-family: monospace;
-    background: var(--bg-tertiary);
-    padding: 12px;
-    border-radius: var(--border-radius-sm);
-    text-align: center;
+.setting-item {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.setting-item:hover {
+    border-color: var(--border-glow);
+}
+
+.setting-label {
     font-weight: 600;
+    color: var(--text-primary);
+}
+
+.setting-toggle {
+    width: 50px;
+    height: 26px;
+    background: rgba(99, 102, 241, 0.2);
+    border-radius: 13px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.setting-toggle.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.setting-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.setting-toggle.active::after {
+    left: 27px;
+}
+
+/* Wallet Section */
+.wallet-section {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(255, 107, 157, 0.1));
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+}
+
+.wallet-section h2 {
+    font-size: 1.25rem;
+    font-family: var(--font-display);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.wallet-section h2::before {
+    content: '💎';
 }
 
 .wallet-balance {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
 }
 
-.about-text {
+.wallet-label {
     font-size: 0.875rem;
     color: var(--text-secondary);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.wallet-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+.wallet-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wallet-btn.primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.wallet-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+}
+
+.wallet-btn.secondary {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.wallet-btn.secondary:hover {
+    border-color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .wallet-actions {
+        flex-direction: column;
+    }
 }

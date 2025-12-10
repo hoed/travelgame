@@ -1,270 +1,298 @@
-/* Rewards.css */
+/* Rewards.css - Futuristic Design */
 .rewards-container {
     padding: var(--spacing-lg);
     padding-bottom: 100px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .rewards-header {
+    text-align: center;
     margin-bottom: var(--spacing-xl);
 }
 
 .rewards-header h1 {
-    font-size: 1.75rem;
-    margin-bottom: var(--spacing-lg);
+    font-size: 2rem;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
 }
 
+.rewards-header p {
+    color: var(--text-secondary);
+}
+
+/* Balance Card */
 .balance-card {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.2), rgba(255, 107, 157, 0.1));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 217, 61, 0.3);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-2xl);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
 }
 
-.balance-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
+.balance-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 217, 61, 0.1) 0%, transparent 50%);
+    animation: balanceGlow 4s ease-in-out infinite;
+}
+
+@keyframes balanceGlow {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+.balance-icon {
+    font-size: 4rem;
     margin-bottom: var(--spacing-md);
+    animation: iconBounce 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.balance-amount {
+    font-size: 3.5rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-xs);
+    position: relative;
+    z-index: 1;
 }
 
 .balance-label {
-    font-size: 0.875rem;
-    opacity: 0.9;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
 }
 
-.balance-value {
-    font-size: 2.5rem;
-    font-weight: 700;
+/* Rewards Grid */
+.rewards-section {
+    margin-bottom: var(--spacing-xl);
 }
 
-.pending-tokens {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 12px;
-    border-radius: var(--border-radius-sm);
-}
-
-.pending-tokens span {
-    font-weight: 600;
-}
-
-.claim-btn {
-    background: white;
-    color: var(--primary);
-    padding: 8px 16px;
-    border-radius: var(--border-radius-sm);
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-.rewards-content h2 {
+.rewards-section h2 {
     font-size: 1.25rem;
-    margin-bottom: var(--spacing-lg);
+    font-family: var(--font-display);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
 .rewards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
 }
 
 .reward-card {
-    background: var(--bg-primary);
-    border-radius: var(--border-radius);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    transition: all 0.3s ease;
+    position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 2px solid transparent;
 }
 
 .reward-card:hover {
+    border-color: var(--border-glow);
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
 }
 
 .reward-card.locked {
     opacity: 0.6;
 }
 
+.reward-card.locked::after {
+    content: '🔒';
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    font-size: 1.5rem;
+}
+
 .reward-image {
-    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    width: 100%;
     height: 120px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: var(--border-radius);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
-}
-
-.reward-content {
-    padding: var(--spacing-lg);
-}
-
-.reward-content h3 {
-    font-size: 1.125rem;
-    margin-bottom: var(--spacing-sm);
-}
-
-.reward-description {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-sm);
-    line-height: 1.5;
-}
-
-.reward-partner {
-    font-size: 0.75rem;
-    color: var(--text-tertiary);
+    font-size: 3rem;
     margin-bottom: var(--spacing-md);
 }
 
-.reward-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--spacing-md);
-    border-top: 1px solid var(--border-color);
+.reward-info h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+}
+
+.reward-info p {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--spacing-md);
 }
 
 .reward-cost {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.cost-value {
-    font-size: 1.5rem;
+.cost-amount {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     font-weight: 700;
-    color: var(--primary);
-}
-
-.cost-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--accent);
+    font-family: var(--font-display);
 }
 
 .redeem-btn {
-    background: var(--primary);
+    padding: 8px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    padding: 10px 20px;
-    border-radius: var(--border-radius-sm);
+    border: none;
+    border-radius: var(--border-radius);
     font-weight: 600;
-    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.redeem-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
 }
 
 .redeem-btn:disabled {
-    background: var(--gray-300);
-    color: var(--gray-500);
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
-/* Modal */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+/* History Section */
+.history-section h2 {
+    font-size: 1.25rem;
+    font-family: var(--font-display);
+    margin-bottom: var(--spacing-md);
     display: flex;
     align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    padding: var(--spacing-lg);
+    gap: var(--spacing-sm);
 }
 
-.modal-content {
-    background: var(--bg-primary);
-    border-radius: var(--border-radius-lg);
-    max-width: 400px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: var(--shadow-xl);
-    position: relative;
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
-.modal-close {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    background: var(--gray-200);
-    width: 32px;
-    height: 32px;
+.history-item {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.history-item:hover {
+    border-color: var(--border-glow);
+}
+
+.history-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.history-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     border-radius: 50%;
-    font-size: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    font-size: 1.25rem;
 }
 
-.modal-header {
+.history-details h4 {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.history-details p {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.history-amount {
+    font-weight: 700;
+    font-family: var(--font-display);
+}
+
+.history-amount.positive {
+    color: var(--success);
+}
+
+.history-amount.negative {
+    color: var(--danger);
+}
+
+/* Empty State */
+.empty-rewards {
     text-align: center;
-    padding: var(--spacing-xl);
-    padding-bottom: var(--spacing-lg);
+    padding: var(--spacing-2xl);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
 }
 
-.modal-icon {
+.empty-rewards .empty-icon {
     font-size: 4rem;
     margin-bottom: var(--spacing-md);
 }
 
-.modal-header h2 {
-    font-size: 1.5rem;
-}
-
-.modal-body {
-    padding: 0 var(--spacing-xl) var(--spacing-xl);
-}
-
-.modal-body h3 {
-    font-size: 1.125rem;
+.empty-rewards h3 {
+    font-size: 1.25rem;
     margin-bottom: var(--spacing-sm);
 }
 
-.modal-body p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-md);
-}
-
-.modal-partner {
-    font-size: 0.75rem;
+.empty-rewards p {
     color: var(--text-tertiary);
-    margin-bottom: var(--spacing-lg);
-}
-
-.modal-cost,
-.modal-balance,
-.modal-remaining {
-    display: flex;
-    justify-content: space-between;
-    padding: var(--spacing-md);
-    background: var(--bg-secondary);
-    border-radius: var(--border-radius-sm);
-    margin-bottom: var(--spacing-sm);
-}
-
-.cost-amount,
-.balance-amount,
-.remaining-amount {
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.modal-actions {
-    display: flex;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-top: 1px solid var(--border-color);
-}
-
-.modal-actions button {
-    flex: 1;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    font-weight: 600;
 }

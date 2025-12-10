@@ -2,7 +2,8 @@
     min-height: 100vh;
     padding-bottom: 80px;
     /* Space for bottom navigation */
-    background: var(--bg-secondary);
+    background: transparent;
+    position: relative;
 }
 
 /* Responsive container */
@@ -10,6 +11,41 @@
     .app-container {
         max-width: 480px;
         margin: 0 auto;
-        box-shadow: var(--shadow-xl);
+        box-shadow: 
+            0 0 60px rgba(0, 212, 255, 0.1),
+            0 0 120px rgba(99, 102, 241, 0.05);
+        border-left: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
     }
+}
+
+/* Global Button Styles */
+button {
+    font-family: var(--font-family);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+/* Global Link Styles */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-light);
+}
+
+/* Selection Color */
+::selection {
+    background: var(--primary);
+    color: white;
+}
+
+/* Focus Styles */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }

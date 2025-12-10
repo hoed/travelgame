@@ -1,218 +1,288 @@
-/* CheckIn.css */
+/* CheckIn.css - Futuristic Design */
 .checkin-container {
     min-height: 100vh;
     padding: var(--spacing-lg);
-    display: flex;
-    flex-direction: column;
-}
-
-.checkin-content {
-    flex: 1;
+    padding-bottom: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-xl) 0;
+    animation: fadeIn 0.5s ease-in;
 }
 
-.location-icon {
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.checkin-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-2xl);
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.checkin-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+/* Location Icon */
+.checkin-icon {
     font-size: 5rem;
     margin-bottom: var(--spacing-lg);
-    animation: pulse 2s ease-in-out infinite;
+    animation: locationPulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
+@keyframes locationPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
-.checkin-content h1 {
+.checkin-card h1 {
     font-size: 1.75rem;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: var(--spacing-sm);
 }
 
-.location-name {
-    font-size: 1.125rem;
+.checkin-location {
+    font-size: 1rem;
     color: var(--text-secondary);
     margin-bottom: var(--spacing-xl);
 }
 
+/* Distance Indicator */
 .distance-indicator {
-    width: 100%;
-    max-width: 300px;
-    margin: var(--spacing-xl) 0;
-}
-
-.distance-circle {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto var(--spacing-lg);
-    border: 8px solid;
-    transition: var(--transition);
-}
-
-.distance-circle.in-range {
-    border-color: var(--secondary);
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
-}
-
-.distance-circle.out-of-range {
-    border-color: var(--warning);
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 
 .distance-value {
     font-size: 2.5rem;
-    font-weight: 700;
-    display: block;
+    font-weight: 800;
+    font-family: var(--font-display);
+    margin-bottom: var(--spacing-xs);
+}
+
+.distance-value.in-range {
+    color: var(--success);
+    text-shadow: 0 0 20px rgba(46, 213, 115, 0.5);
+}
+
+.distance-value.out-of-range {
+    color: var(--warning);
 }
 
 .distance-label {
     font-size: 0.875rem;
-    color: var(--text-secondary);
-    display: block;
+    color: var(--text-tertiary);
 }
 
-.status-message {
-    padding: var(--spacing-md);
+.distance-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius);
     font-weight: 600;
+    font-size: 0.875rem;
 }
 
-.status-message.success {
-    background: #d1fae5;
-    color: #065f46;
+.distance-status.success {
+    background: rgba(46, 213, 115, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
 }
 
-.status-message.warning {
-    background: #fef3c7;
-    color: #92400e;
+.distance-status.warning {
+    background: rgba(255, 165, 2, 0.2);
+    color: var(--warning);
+    border: 1px solid var(--warning);
 }
 
-.loading-location {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-xl);
-}
-
-.checkin-info {
-    background: var(--bg-primary);
+/* Reward Preview */
+.reward-preview {
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.2), rgba(255, 107, 157, 0.1));
+    border: 1px solid rgba(255, 217, 61, 0.3);
     border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-xl) 0;
-    box-shadow: var(--shadow);
-    text-align: left;
-    width: 100%;
-    max-width: 400px;
-}
-
-.checkin-info h3 {
-    font-size: 1.125rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.checkin-info ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.checkin-info li {
-    padding-left: var(--spacing-lg);
-    position: relative;
-    color: var(--text-secondary);
-}
-
-.checkin-info li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--primary);
-    font-weight: 700;
-}
-
-.checkin-button {
-    width: 100%;
-    max-width: 300px;
-    padding: 16px;
-    font-size: 1.125rem;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
 }
 
-.button-spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+.reward-preview-icon {
+    font-size: 1.5rem;
 }
 
-.checkin-result {
+.reward-preview-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: var(--font-display);
+}
+
+/* Check In Button */
+.checkin-btn {
+    width: 100%;
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.checkin-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+}
+
+.checkin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Success State */
+.checkin-success {
+    animation: successPop 0.5s ease-out;
+}
+
+@keyframes successPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-icon {
+    font-size: 6rem;
+    margin-bottom: var(--spacing-lg);
+    animation: celebrateBounce 1s ease-in-out infinite;
+}
+
+@keyframes celebrateBounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(-5deg); }
+    75% { transform: scale(1.1) rotate(5deg); }
+}
+
+.success-title {
+    font-size: 2rem;
+    font-family: var(--font-display);
+    color: var(--success);
+    margin-bottom: var(--spacing-sm);
+}
+
+.success-reward {
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-xl);
+}
+
+.continue-btn {
+    padding: var(--spacing-md) var(--spacing-2xl);
+    background: linear-gradient(135deg, var(--success), var(--neon-green));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(46, 213, 115, 0.5);
+}
+
+/* Loading State */
+.checkin-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-lg);
-    padding: var(--spacing-xl);
 }
 
-.result-icon {
-    width: 100px;
-    height: 100px;
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--primary);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    font-weight: 700;
+    animation: spin 1s linear infinite;
 }
 
-.checkin-result.success .result-icon {
-    background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-    color: white;
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-.checkin-result.failed .result-icon {
-    background: linear-gradient(135deg, var(--danger), #dc2626);
-    color: white;
+.loading-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
 }
 
-.checkin-result h2 {
-    font-size: 1.75rem;
+/* Confetti */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
 }
 
 .confetti {
-    font-size: 3rem;
-    animation: confetti 1s ease-out;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: confettiFall 3s ease-out forwards;
 }
 
-@keyframes confetti {
+@keyframes confettiFall {
     0% {
-        transform: translateY(0) rotate(0deg);
+        transform: translateY(-100px) rotate(0deg);
         opacity: 1;
     }
-
     100% {
-        transform: translateY(-100px) rotate(360deg);
+        transform: translateY(100vh) rotate(720deg);
         opacity: 0;
     }
 }
