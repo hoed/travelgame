@@ -1,11 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 interface WalletContextType {
   address: string | null;
-  balance: string;
+  tokenBalance: string;
+  isConnected: boolean;
+  useNonCryptoMode: boolean;
   connectWallet: () => Promise<void>;
-  claimTokens: (amount: number) => Promise<boolean>;
+  disconnectWallet: () => void;
+  toggleNonCryptoMode: () => void;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -18,33 +21,59 @@ export const useWallet = () => {
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [address, setAddress] = useState<string | null>(null);
-  const [balance, setBalance] = useState('0');
+  const [tokenBalance, setTokenBalance] = useState('0');
+  const [useNonCryptoMode, setUseNonCryptoMode] = useState(
+    localStorage.getItem('nonCryptoMode') === 'true'
+  );
+
+  const isConnected = !!address;
 
   const connectWallet = async () => {
-    if (window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.send("eth_requestAccounts", []);
-      const addr = accounts[0];
-      setAddress(addr);
-      localStorage.setItem('wallet_enc', btoa(addr)); // obfuscated
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const accounts = await provider.send('eth_requestAccounts', []);
+        setAddress(accounts[0]);
+      } catch (err) {
+        console.error('Wallet connect failed', err);
+      }
+    } else {
+      alert('Please install MetaMask!');
     }
   };
 
-  const claimTokens = async (amount: number): Promise<boolean> => {
-    const last = localStorage.getItem('last_claim');
-    if (last && Date.now() - parseInt(last) < 60000) {
-      alert('Wait 1 minute between claims!');
-      return false;
-    }
-
-    // TODO: Call real backend or contract
-    localStorage.setItem('last_claim', Date.now().toString());
-    alert(`Claimed ${amount} SMT!`);
-    return true;
+  const disconnectWallet = () => {
+    setAddress(null);
+    setTokenBalance('0');
   };
+
+  const toggleNonCryptoMode = () => {
+    const newMode = !useNonCryptoMode;
+    setUseNonCryptoMode(newMode);
+    localStorage.setItem('nonCryptoMode', String(newMode));
+    if (newMode) disconnectWallet();
+  };
+
+  // Optional: fetch real balance when connected
+  useEffect(() => {
+    if (address && !useNonCryptoMode) {
+      // Replace with real token contract call later
+      setTokenBalance('0'); // placeholder
+    }
+  }, [address, useNonCryptoMode]);
 
   return (
-    <WalletContext.Provider value={{ address, balance, connectWallet, claimTokens }}>
+    <WalletContext.Provider
+      value={{
+        address,
+        tokenBalance,
+        isConnected,
+        useNonCryptoMode,
+        connectWallet,
+        disconnectWallet,
+        toggleNonCryptoMode,
+      }}
+    >
       {children}
     </WalletContext.Provider>
   );
