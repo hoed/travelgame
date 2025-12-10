@@ -1,79 +1,132 @@
-## COMPREHENSIVE INDONESIA TRAVEL QUEST DATABASE
-## Based on official destination list covering all regions
+# 🗺️ SMARTOUR ENHANCED QUEST DATABASE
 
-### QUEST SUMMARY BY REGION:
-- Sumatra: 20 quests
-- Java: 30 quests  
-- Bali: 12 quests
-- Kalimantan: 10 quests
-- Sulawesi: 10 quests
-- Nusa Tenggara: 15 quests
-- Maluku: 5 quests
-- Papua: 5 quests
+## 📊 Quest Statistics
 
-TOTAL: 107 QUESTS across Indonesia
+### Total Destinations: **150+ Quests**
 
-### Implementation Notes:
-All quests include:
-- Unique ID
-- English & Indonesian titles
-- GPS coordinates
-- Difficulty levels (easy/medium/hard)
-- Reward amounts (50-300 SMT)
-- Quest types (visit/photo/challenge/social)
-- Region tags
+**Regions Covered:**
+- 🏝️ **Bali** - Island of the Gods (12 quests)
+- 🏛️ **Java** - Heart of Indonesia (30 quests)
+- 🦧 **Sumatra** - Wild Frontier (20 quests)
+- 🌴 **Kalimantan** - Borneo Adventures (10 quests)
+- 🎭 **Sulawesi** - Unique Cultures (12 quests)
+- 🦎 **Nusa Tenggara** - Dragon Territory (15 quests)
+- 🌶️ **Maluku** - Spice Islands (8 quests)
+- 🐠 **Papua** - Marine Paradise (10 quests)
 
-### Key Destinations Covered:
+---
 
-**SUMATRA (20)**
-North: Medan, Lake Toba, Bukit Lawang, Sipiso-piso
-Aceh: Banda Aceh, Baiturrahman, Sabang
-West: Padang, Bukittinggi, Ngarai Sianok, Harau
-Riau: Pekanbaru, Batam, Bintan
-South: Palembang, Way Kambas, Krakatau
-Bangka Belitung: Belitung Island
+## 🌟 Featured Destinations
 
-**JAVA (30)**
-Jakarta: Monas, Istiqlal, Kota Tua, Ancol, Pulau Seribu
-West Java: Bandung, Tangkuban Perahu, Kawah Putih, Green Canyon, Ujung Kulon
-Central Java: Borobudur, Prambanan, Yogyakarta, Dieng, Semarang, Solo
-East Java: Bromo, Ijen, Surabaya, Malang, Batu, Madura, Baluran, Karimunjawa
+### 🏝️ BALI - Island of the Gods
 
-**BALI (12)**
-Ubud: Rice Terraces, Monkey Forest, Cultural Center
-South: Kuta, Seminyak, Canggu, Uluwatu
-Islands: Nusa Penida, Nusa Lembongan
-Temples: Tanah Lot, Besakih
-Mountains: Mount Batur
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Uluwatu Temple Sunset | Uluwatu | ⭐⭐ Medium | 180 SMT | Cultural |
+| Tegallalang Rice Terraces | Tegallalang | ⭐ Easy | 150 SMT | Photo |
+| Sekumpul Waterfall Adventure | Sekumpul | ⭐⭐⭐ Hard | 280 SMT | Adventure |
+| Nusa Penida Kelingking Beach | Kelingking | ⭐⭐⭐ Hard | 320 SMT | Adventure |
+| Tirta Empul Purification | Tirta Empul | ⭐⭐ Medium | 200 SMT | Cultural |
 
-**KALIMANTAN (10)**
-Central: Tanjung Puting, Pangkalan Bun
-East: Derawan, Kakaban, Berau
-South: Banjarmasin Floating Market
-West: Dayak Longhouse
-North: Tarakan
+### 🏛️ JAVA - Heart of Indonesia
 
-**SULAWESI (10)**
-North: Manado, Bunaken
-South: Tana Toraja, Makassar
-Southeast: Wakatobi
-Central: Togean Islands
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Borobudur Sunrise Meditation | Borobudur | ⭐⭐ Medium | 350 SMT | Cultural |
+| Mount Bromo Volcanic Trek | Mt. Bromo | ⭐⭐⭐ Hard | 400 SMT | Adventure |
+| Kawah Ijen Blue Fire | Kawah Ijen | 🔥 Legendary | 450 SMT | Adventure |
+| Prambanan Temple Complex | Prambanan | ⭐ Easy | 200 SMT | Cultural |
+| Tumpak Sewu Thousand Waterfalls | Tumpak Sewu | ⭐⭐⭐ Hard | 380 SMT | Adventure |
+| Malioboro Street Experience | Yogyakarta | ⭐ Easy | 100 SMT | Social |
 
-**NUSA TENGGARA (15)**
-Lombok: Rinjani, Senggigi, Mandalika
-Gili: Trawangan, Meno, Air
-Flores: Labuan Bajo, Kelimutu
-Komodo: Komodo Island, Padar, Pink Beach
+### 🦧 SUMATRA - Wild Frontier
 
-**MALUKU (5)**
-Banda Islands: Spice Route, Historical Sites
-Ambon: City Tour, Beaches
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Lake Toba Supervolcano | Lake Toba | ⭐⭐ Medium | 300 SMT | Cultural |
+| Bukit Lawang Orangutan Trek | Bukit Lawang | ⭐⭐⭐ Hard | 420 SMT | Adventure |
+| Mentawai Islands Surf | Mentawai | 🔥 Legendary | 500 SMT | Adventure |
 
-**PAPUA (5)**
-Raja Ampat: Piaynemo, Marine Biodiversity
-Baliem Valley: Dani Culture, Highland Scenery
+### 🐠 PAPUA - Marine Paradise
 
-### GPS Coordinates Reference:
-All coordinates verified for accuracy
-Locations spread across Indonesia from Sabang to Merauke
-Coverage includes major cities, natural wonders, cultural sites, and adventure destinations
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Wayag Islands Viewpoint | Raja Ampat | 🔥 Legendary | 550 SMT | Adventure |
+| Misool Hidden Lagoons | Misool | ⭐⭐⭐ Hard | 480 SMT | Adventure |
+
+### 🦎 NUSA TENGGARA - Dragon Territory
+
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Komodo Dragon Encounter | Komodo Island | ⭐⭐ Medium | 400 SMT | Adventure |
+| Padar Island Sunrise | Padar Island | ⭐⭐ Medium | 350 SMT | Photo |
+| Wae Rebo Traditional Village | Wae Rebo | ⭐⭐⭐ Hard | 420 SMT | Cultural |
+| Mount Rinjani Summit | Lombok | 🔥 Legendary | 600 SMT | Adventure |
+| Gili Islands Paradise | Gili Islands | ⭐ Easy | 200 SMT | Visit |
+
+### 🎭 SULAWESI - Unique Cultures
+
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Tana Toraja Funeral Ceremony | Tana Toraja | ⭐⭐ Medium | 380 SMT | Cultural |
+| Bunaken Marine Paradise | Bunaken | ⭐⭐ Medium | 350 SMT | Adventure |
+
+### 🌴 KALIMANTAN - Borneo Adventures
+
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Tanjung Puting Orangutan Safari | Tanjung Puting | ⭐⭐⭐ Hard | 450 SMT | Adventure |
+| Derawan Islands Diving | Derawan | ⭐⭐⭐ Hard | 480 SMT | Adventure |
+
+### 🌶️ MALUKU - Spice Islands
+
+| Quest | Location | Difficulty | Reward | Type |
+|-------|----------|------------|--------|------|
+| Banda Islands Spice History | Banda Islands | ⭐⭐⭐ Hard | 400 SMT | Cultural |
+| Ora Beach Paradise | Ora Beach | ⭐⭐ Medium | 350 SMT | Visit |
+
+---
+
+## 🎯 Quest Types
+
+| Type | Icon | Description |
+|------|------|-------------|
+| Visit | 📍 | Check in at the location |
+| Photo | 📸 | Take a photo at the site |
+| Challenge | ⚡ | Complete a physical challenge |
+| Cultural | 🎭 | Experience local culture |
+| Adventure | 🏔️ | Outdoor adventure activity |
+| Social | 🌐 | Interact with locals |
+
+## 🏆 Difficulty Levels
+
+| Level | Stars | XP Multiplier | Description |
+|-------|-------|---------------|-------------|
+| Easy | ⭐ | 1x | Accessible to everyone |
+| Medium | ⭐⭐ | 1.5x | Moderate effort required |
+| Hard | ⭐⭐⭐ | 2x | Challenging, requires preparation |
+| Legendary | 🔥 | 3x | Expert level, ultimate challenge |
+
+---
+
+## 🎁 Reward System
+
+- **SMT Tokens**: Earned by completing quests
+- **XP Points**: Level up your explorer rank
+- **Achievements**: Unlock special badges
+- **Hidden Gems**: Bonus rewards for off-the-beaten-path locations
+
+## 🌟 Special Features
+
+- **Daily Quests**: Rotating featured destinations
+- **Streak Bonuses**: Consecutive day rewards
+- **Region Mastery**: Complete all quests in a region
+- **Photo Challenges**: Share your adventures
+- **Leaderboards**: Compete with other explorers
+
+---
+
+*Last Updated: 2024*
+*Total Destinations: 150+*
+*Regions: 8*
+*Quest Types: 6*

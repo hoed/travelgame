@@ -71,10 +71,11 @@ function LocationUpdater() {
 
                     setLocationError(errorMessage);
 
-                    // Default to Jakarta, Indonesia
-                    const defaultPos: [number, number] = [-6.2088, 106.8456];
+                    // Default to Sidoarjo, East Java (near Surabaya) - center of many quests
+                    const defaultPos: [number, number] = [-7.4479, 112.7186];
                     setUserPosition(defaultPos);
-                    map.setView(defaultPos, 10);
+                    updateUserLocation(defaultPos[0], defaultPos[1]);
+                    map.setView(defaultPos, 11);
                 },
                 {
                     enableHighAccuracy: true,
@@ -89,10 +90,11 @@ function LocationUpdater() {
             };
         } else {
             setLocationError('Geolocation is not supported by your browser.');
-            // Default to Jakarta, Indonesia
-            const defaultPos: [number, number] = [-6.2088, 106.8456];
+            // Default to Sidoarjo, East Java (near Surabaya)
+            const defaultPos: [number, number] = [-7.4479, 112.7186];
             setUserPosition(defaultPos);
-            map.setView(defaultPos, 10);
+            updateUserLocation(defaultPos[0], defaultPos[1]);
+            map.setView(defaultPos, 11);
         }
     }, [map, updateUserLocation]);
 
@@ -130,7 +132,7 @@ const Map = () => {
 
             <MapContainer
                 center={[-7.4479, 112.7186]}
-                zoom={10}
+                zoom={11}
                 className="leaflet-map"
             >
                 <TileLayer

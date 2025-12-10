@@ -1,30 +1,55 @@
+/* Quests Page - Futuristic Design */
 .quests-container {
     padding: var(--spacing-lg);
+    padding-bottom: 100px;
+    animation: fadeIn 0.5s ease-in;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
 .quests-header {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 
 .quests-header h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: var(--spacing-sm);
 }
 
 .quest-stats {
     display: flex;
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg);
     font-size: 0.875rem;
-    color: var(--text-secondary);
 }
 
+.quest-stats span {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--text-secondary);
+    background: var(--bg-glass);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+}
+
+/* Controls */
 .quests-controls {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 
 .region-selector {
@@ -36,129 +61,194 @@
 .region-selector label {
     font-weight: 600;
     font-size: 0.875rem;
-    color: var(--text-primary);
+    color: var(--text-secondary);
 }
 
 .region-select {
-    padding: 8px 12px;
-    border-radius: var(--border-radius-sm);
+    padding: 10px 16px;
+    border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    background: var(--bg-primary);
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
     color: var(--text-primary);
     font-weight: 600;
     font-size: 0.875rem;
     min-width: 150px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.region-select:hover,
+.region-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
 }
 
 .filter-buttons {
     display: flex;
-    gap: var(--spacing-sm);
-    background: var(--bg-tertiary);
+    gap: var(--spacing-xs);
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
     padding: 4px;
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
 .filter-buttons button {
-    padding: 8px 16px;
+    padding: 10px 18px;
     border-radius: var(--border-radius-sm);
     background: transparent;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     font-weight: 600;
     font-size: 0.875rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-buttons button:hover {
+    color: var(--text-primary);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .filter-buttons button.active {
-    background: var(--bg-primary);
-    color: var(--primary);
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
 }
 
 .sort-select {
-    padding: 8px 12px;
-    border-radius: var(--border-radius-sm);
+    padding: 10px 16px;
+    border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    background: var(--bg-primary);
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
     color: var(--text-primary);
     font-weight: 600;
     font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
+.sort-select:hover,
+.sort-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+/* Quest List */
 .quests-list {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
 }
 
+/* Quest Card */
 .quest-card {
-    background: var(--bg-primary);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
     cursor: pointer;
-    transition: var(--transition);
-    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.quest-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .quest-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary);
+    transform: translateX(8px);
+    border-color: var(--border-glow);
+    box-shadow: var(--shadow-lg);
+}
+
+.quest-card:hover::before {
+    opacity: 1;
 }
 
 .quest-card.completed {
     opacity: 0.7;
-    background: var(--bg-secondary);
+    border-color: var(--success);
 }
 
+.quest-card.completed::before {
+    background: linear-gradient(180deg, var(--success), var(--neon-green));
+    opacity: 1;
+}
+
+/* Quest Card Header */
 .quest-card-header {
     display: flex;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
     margin-bottom: var(--spacing-md);
+    gap: var(--spacing-md);
 }
 
 .quest-title-section h3 {
     font-size: 1.125rem;
+    font-family: var(--font-display);
     margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
 }
 
 .quest-location {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
 }
 
 .quest-reward-badge {
-    background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-    color: white;
-    padding: 8px 12px;
-    border-radius: var(--border-radius-sm);
-    text-align: center;
-    min-width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.2), rgba(255, 107, 157, 0.2));
+    border: 1px solid rgba(255, 217, 61, 0.3);
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
 }
 
-.reward-amount {
-    display: block;
+.quest-reward-badge .reward-amount {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: var(--font-display);
 }
 
-.reward-label {
-    display: block;
-    font-size: 0.75rem;
-    opacity: 0.9;
+.quest-reward-badge .reward-label {
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    font-weight: 600;
 }
 
+/* Quest Description */
 .quest-description {
     font-size: 0.875rem;
     color: var(--text-secondary);
+    line-height: 1.6;
     margin-bottom: var(--spacing-md);
-    line-height: 1.5;
 }
 
+/* Quest Card Footer */
 .quest-card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
 }
 
 .quest-meta {
@@ -171,62 +261,121 @@
 .type-badge,
 .distance-badge {
     padding: 4px 12px;
-    border-radius: 12px;
+    border-radius: 15px;
     font-size: 0.75rem;
     font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
 }
 
 .difficulty-badge.easy {
-    background: #d1fae5;
-    color: #065f46;
+    color: var(--success);
+    border-color: var(--success);
+    background: rgba(46, 213, 115, 0.1);
 }
 
 .difficulty-badge.medium {
-    background: #fef3c7;
-    color: #92400e;
+    color: var(--warning);
+    border-color: var(--warning);
+    background: rgba(255, 165, 2, 0.1);
 }
 
 .difficulty-badge.hard {
-    background: #fee2e2;
-    color: #991b1b;
+    color: var(--danger);
+    border-color: var(--danger);
+    background: rgba(255, 71, 87, 0.1);
 }
 
 .type-badge {
-    background: var(--gray-100);
-    color: var(--text-secondary);
+    color: var(--primary);
+    border-color: var(--primary);
+    background: rgba(0, 212, 255, 0.1);
 }
 
 .distance-badge {
-    background: var(--primary-light);
-    color: white;
-}
-
-.start-quest-btn {
-    background: var(--primary);
-    color: white;
-    padding: 8px 16px;
-    border-radius: var(--border-radius-sm);
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-.completed-badge {
-    color: var(--secondary);
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-.empty-state {
-    text-align: center;
-    padding: var(--spacing-xl);
     color: var(--text-secondary);
 }
 
+/* Buttons */
+.start-quest-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.start-quest-btn:hover {
+    transform: translateX(4px);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+}
+
+.completed-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 10px 20px;
+    background: rgba(46, 213, 115, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+}
+
 .empty-icon {
-    font-size: 3rem;
+    font-size: 4rem;
     margin-bottom: var(--spacing-md);
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 .empty-state h3 {
+    font-size: 1.25rem;
     margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    color: var(--text-tertiary);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .quests-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-buttons {
+        justify-content: center;
+    }
+    
+    .quest-card-header {
+        flex-direction: column;
+    }
+    
+    .quest-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
