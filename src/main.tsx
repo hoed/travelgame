@@ -1,56 +1,74 @@
-// src/main.tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
+// src/contexts/WalletContext.tsx
+import React, { createContext, useContext, useState } from 'react';
+import { useAccount, useBalance } from 'wagmi';
+import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
 
-// RainbowKit + wagmi imports
-import '@rainbow-me/rainbowkit/styles.css';
-import {
-  RainbowKitProvider,
-  getDefaultConfig,
-  darkTheme,
-} from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
-import { polygon } from 'wagmi/chains';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// Create wagmi config (only Polygon)
-const config = getDefaultConfig({
-  appName: 'Smartour',
-  projectId: '1ef3def5d79cc4883140220816426250', // Get free at https://cloud.walletconnect.com
-  chains: [polygon],
-  ssr: false,
-});
-
-// React Query client
-const queryClient = new QueryClient();
-
-// Initialize Telegram WebApp (your original code – kept 100%)
-if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-  const tg = window.Telegram.WebApp;
-  tg.ready();
-  tg.expand();
-  tg.enableClosingConfirmation();
+interface WalletContextType {
+  address: string | null;
+  isConnected: boolean;
+  maticBalance: string | null;
+  tokenBalance: string | null;
+  useNonCryptoMode: boolean;
+  toggleNonCryptoMode: () => void;
+  claimTokens: (amount: number) => Promise<boolean>;
 }
 
-// Render app with RainbowKit + Wagmi + Telegram support
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={darkTheme({
-            accentColor: '#7c3aed',
-            accentColorForeground: 'white',
-            borderRadius: 'large',
-            fontStack: 'system',
-          })}
-          initialChain={polygon}
-        >
-          <App />
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
-  </React.StrictMode>
-);
+const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+export const useWallet = () => {
+  const context = useContext(WalletContext);
+  if (!context) throw new Error('useWalletContext not found');
+  return context;
+};
+
+export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [useNonCryptoMode, setUseNonCryptoMode] = useState(
+    localStorage.getItem('nonCryptoMode') === 'true'
+  );
+
+  const { address, isConnected } = useAccount();
+
+  const { data: maticData } = useBalance({ address });
+  const maticBalance = maticData?.formatted ?? null;
+
+  const { data: tokenData } = useBalance({
+    address,
+    token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
+  });
+  const tokenBalance = tokenData?.formatted ?? null;
+
+  const toggleNonCryptoMode = () => {
+    const newMode = !useNonCryptoMode;
+    setUseNonCryptoMode(newMode);
+    localStorage.setItem('nonCryptoMode', String(newMode));
+  };
+
+  const claimTokens = async (amount: number): Promise<boolean> => {
+    if (useNonCryptoMode) {
+      console.log(`Claimed ${amount} SMT (non-crypto mode)`);
+      return true;
+    }
+    if (!isConnected) {
+      alert('Connect wallet first!');
+      return false;
+    }
+    alert(`Claimed ${amount} SMT!`);
+    return true;
+  };
+
+  return (
+    <WalletContext.Provider
+      value={{
+        address: address ?? null,
+        isConnected,
+        maticBalance,
+        tokenBalance,
+        useNonCryptoMode,
+        toggleNonCryptoMode,
+        claimTokens,
+      }}
+    >
+      {children}
+    </WalletContext.Provider>
+  );
+};
