@@ -1,7 +1,9 @@
 // src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState } from 'react';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount } from 'wagmi';
+import { useReadContract } from 'wagmi';
 import { formatUnits } from 'viem';
+import { erc20ABI } from 'viem';
 import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
 
 interface WalletContextType {
@@ -29,16 +31,18 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const { address, isConnected } = useAccount();
 
-  // MATIC balance (18 decimals)
+  // Native MATIC balance (wagmi v2)
   const { data: maticData } = useBalance({ address });
   const maticBalance = maticData ? formatUnits(maticData.value, 18) : null;
 
-  // SMT token balance (18 decimals — change if your token uses different)
-  const { data: tokenData } = useBalance({
-    address,
-    token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
+  // ERC20 token balance (wagmi v2 — use useReadContract for tokens)
+  const { data: tokenData } = useReadContract({
+    address: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
+    abi: erc20ABI,
+    functionName: 'balanceOf',
+    args: [address ?? '0x0000000000000000000000000000000000000000'],
   });
-  const tokenBalance = tokenData ? formatUnits(tokenData.value, 18) : null;
+  const tokenBalance = tokenData ? formatUnits(tokenData as bigint, 18) : null;
 
   const toggleNonCryptoMode = () => {
     const newMode = !useNonCryptoMode;
