@@ -60,6 +60,18 @@ declare global {
             isMetaMask?: boolean;
         };
     }
+
+    // *** KODE PERBAIKAN UNTUK w3m-button DITEMPATKAN DI SINI ***
+    namespace JSX {
+        interface IntrinsicElements {
+            'w3m-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+                size?: 'sm' | 'md' | 'lg';
+                label?: string;
+                balance?: 'show' | 'hide';
+            };
+        }
+    }
+    // ************************************************************
 }
 
 export { };

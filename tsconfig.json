@@ -28,6 +28,8 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src"
+    "src",
+    // BARIS PERBAIKAN: Menambahkan global.d.ts agar deklarasi Web3Modal terbaca
+    "global.d.ts"
   ]
 }
