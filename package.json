@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.10",
+    "@reown/appkit": "^1.8.15",
+    "@reown/appkit-adapter-wagmi": "^1.8.15",
     "@tanstack/react-query": "^5.90.12",
     "@telegram-apps/sdk-react": "^2.0.25",
     "@types/leaflet": "^1.9.21",
