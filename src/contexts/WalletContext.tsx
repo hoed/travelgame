@@ -1,16 +1,20 @@
 // src/contexts/WalletContext.tsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import React, { createContext, useContext, useState } from 'react';
+import { useAccount, useBalance } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
+import { Wallet } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
+import './WalletConnect.css';
 
 interface WalletContextType {
   address: string | null;
-  tokenBalance: string;
   isConnected: boolean;
+  maticBalance: string | null;
+  tokenBalance: string | null;
   useNonCryptoMode: boolean;
-  connectWallet: () => Promise<void>;
-  disconnectWallet: () => void;
   toggleNonCryptoMode: () => void;
-  claimTokens: (amount: number) => Promise<boolean>;   // ← THIS WAS MISSING
+  claimTokens: (amount: number) => Promise<boolean>;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -22,79 +26,115 @@ export const useWallet = () => {
 };
 
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [address, setAddress] = useState<string | null>(null);
-  const [tokenBalance, setTokenBalance] = useState('0');
   const [useNonCryptoMode, setUseNonCryptoMode] = useState(
     localStorage.getItem('nonCryptoMode') === 'true'
   );
 
-  const isConnected = !!address;
+  const { address, isConnected } = useAccount();
 
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await provider.send('eth_requestAccounts', []);
-        setAddress(accounts[0]);
-      } catch (err) {
-        console.error('Wallet connect failed', err);
-      }
-    } else {
-      alert('Please install MetaMask!');
-    }
-  };
+  const { data: maticData } = useBalance({ address });
+  const maticBalance = maticData?.formatted ?? null;
 
-  const disconnectWallet = () => {
-    setAddress(null);
-    setTokenBalance('0');
-  };
+  const { data: tokenData } = useBalance({
+    address,
+    token: SMARTOUR_TOKEN_ADDRESS,
+  });
+  const tokenBalance = tokenData?.formatted ?? null;
 
   const toggleNonCryptoMode = () => {
     const newMode = !useNonCryptoMode;
     setUseNonCryptoMode(newMode);
     localStorage.setItem('nonCryptoMode', String(newMode));
-    if (newMode) disconnectWallet();
   };
 
-  // ← THIS IS THE FUNCTION Rewards.tsx WAS LOOKING FOR
   const claimTokens = async (amount: number): Promise<boolean> => {
     if (useNonCryptoMode) {
-      // In non-crypto mode: just add to local balance
-      setTokenBalance(prev => String(Number(prev) + amount));
+      console.log(`Claimed ${amount} SMT (non-crypto mode)`);
       return true;
     }
-
-    if (!address) {
-      alert('Connect wallet first!');
+    if (!isConnected) {
+      alert('Please connect wallet first');
       return false;
     }
-
-    // TODO: Replace with real contract call when ready
-    alert(`Claimed ${amount} SMT! (Real tx coming soon)`);
-    setTokenBalance(prev => String(Number(prev) + amount));
+    alert(`Claimed ${amount} SMT!`);
     return true;
   };
-
-  useEffect(() => {
-    if (address && !useNonCryptoMode) {
-      setTokenBalance('0'); // placeholder — replace with real fetch later
-    }
-  }, [address, useNonCryptoMode]);
 
   return (
     <WalletContext.Provider
       value={{
-        address,
-        tokenBalance,
+        address: address ?? null,
         isConnected,
+        maticBalance,
+        tokenBalance,
         useNonCryptoMode,
-        connectWallet,
-        disconnectWallet,
         toggleNonCryptoMode,
-        claimTokens,                 // ← NOW INCLUDED
+        claimTokens,
       }}
     >
       {children}
     </WalletContext.Provider>
   );
 };
+
+// Beautiful RainbowKit wallet button
+export const WalletConnectButton: React.FC = () => {
+  const { t } = useLanguage();
+  const { useNonCryptoMode, toggleNonCryptoMode, tokenBalance } = useWallet();
+
+  if (useNonCryptoMode) {
+    return (
+      <button onClick={toggleNonCryptoMode} className="non-crypto-btn">
+        Non-Crypto Mode Active
+      </button>
+    );
+  }
+
+  return (
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        mounted,
+      }) => {
+        const connected = mounted && account && chain;
+
+        return (
+          <div className="wallet-connect-wrapper">
+            {!connected ? (
+              <button onClick={openConnectModal} className="connect-btn">
+                <Wallet size={18} />
+                {t('wallet.connect')}
+              </button>
+            ) : chain.unsupported ? (
+              <button onClick={openChainModal} className="wrong-network">
+                Wrong Network
+              </button>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                {chain.iconUrl && (
+                  <img src={chain.iconUrl} alt={chain.name} width={24} height={24} style={{ borderRadius: 12 }} />
+                )}
+                <button onClick={openAccountModal} className="account-btn">
+                  {account.displayName}
+                  {account.displayBalance && ` • ${account.displayBalance}`}
+                </button>
+                {tokenBalance && parseFloat(tokenBalance) > 0 && (
+                  <span className="smt-badge">
+                    {parseFloat(tokenBalance).toFixed(2)} SMT
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      }}
+    </ConnectButton.Custom>
+  );
+};
+
+// Export both
+export { WalletProvider, WalletConnectButton };
