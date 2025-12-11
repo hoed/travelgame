@@ -1,6 +1,7 @@
 // src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
+import { formatUnits } from 'viem';
 import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
 
 interface WalletContextType {
@@ -28,14 +29,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const { address, isConnected } = useAccount();
 
+  // MATIC balance
+ 18 decimals
   const { data: maticData } = useBalance({ address });
-  const maticBalance = maticData?.formatted ?? null;
+  const maticBalance = maticData ? formatUnits(maticData.value, 18) : null;
 
+  // SMT token balance — assuming 18 decimals (change if different)
   const { data: tokenData } = useBalance({
     address,
     token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
   });
-  const tokenBalance = tokenData?.formatted ?? null;
+  const tokenBalance = tokenData ? formatUnits(tokenData.value, 18) : null;
 
   const toggleNonCryptoMode = () => {
     const newMode = !useNonCryptoMode;
@@ -44,10 +48,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const claimTokens = async (amount: number): Promise<boolean> => {
-    if (useNonCryptoMode) {
-      console.log(`Claimed ${amount} SMT (non-crypto mode)`);
-      return true;
-    }
+    if (useNonCryptoMode) return true;
     if (!isConnected) {
       alert('Connect wallet first!');
       return false;
