@@ -8,7 +8,6 @@ import { useLanguage } from './LanguageContext';
 import './WalletConnect.css';
 
 interface WalletContextType {
-  {
   address: string | null;
   isConnected: boolean;
   maticBalance: string | null;
