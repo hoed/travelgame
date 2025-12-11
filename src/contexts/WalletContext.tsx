@@ -1,6 +1,6 @@
 // src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState } from 'react';
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
 import { Wallet } from 'lucide-react';
@@ -31,13 +31,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   );
 
   const { address, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
 
-  // MATIC balance
   const { data: maticData } = useBalance({ address });
   const maticBalance = maticData?.formatted ?? null;
 
-  // SMT token balance
   const { data: tokenData } = useBalance({
     address,
     token: SMARTOUR_TOKEN_ADDRESS,
@@ -48,7 +45,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const newMode = !useNonCryptoMode;
     setUseNonCryptoMode(newMode);
     localStorage.setItem('nonCryptoMode', String(newMode));
-    if (newMode) disconnect();
   };
 
   const claimTokens = async (amount: number): Promise<boolean> => {
@@ -81,7 +77,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   );
 };
 
-// Beautiful RainbowKit Connect Button
+// Beautiful RainbowKit wallet button
 export const WalletConnectButton: React.FC = () => {
   const { t } = useLanguage();
   const { useNonCryptoMode, toggleNonCryptoMode, tokenBalance } = useWallet();
@@ -96,47 +92,49 @@ export const WalletConnectButton: React.FC = () => {
 
   return (
     <ConnectButton.Custom>
-    {({
-      account,
-      chain,
-      openAccountModal,
-      openChainModal,
-      openConnectModal,
-      mounted,
-    }) => {
-      const connected = mounted && account && chain;
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        mounted,
+      }) => {
+        const connected = mounted && account && chain;
 
-      return (
-        <div className="wallet-connect-wrapper">
-          {!connected ? (
-            <button onClick={openConnectModal} className="connect-btn">
-              <Wallet size={18} />
-              {t('wallet.connect')}
-            </button>
-          ) : chain.unsupported ? (
-            <button onClick={openChainModal} className="wrong-network">
-              Wrong Network
-            </button>
-          ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              {chain.iconUrl && (
-                <img src={chain.iconUrl} alt={chain.name} width={24} height={24} style={{ borderRadius: 12 }} />
-              )}
-              <button onClick={openAccountModal} className="account-btn">
-                {account.displayName}
-                {account.displayBalance && ` • ${account.displayBalance}`}
+        return (
+          <div className="wallet-connect-wrapper">
+            {!connected ? (
+              <button onClick={openConnectModal} className="connect-btn">
+                <Wallet size={18} />
+                {t('wallet.connect')}
               </button>
-              {tokenBalance && parseFloat(tokenBalance) > 0 && (
-                <span className="smt-badge">
-                  {parseFloat(tokenBalance).toFixed(2)} SMT
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      );
-    }}
-  </ConnectButton.Custom>
+            ) : chain.unsupported ? (
+              <button onClick={openChainModal} className="wrong-network">
+                Wrong Network
+              </button>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                {chain.iconUrl && (
+                  <img src={chain.iconUrl} alt={chain.name} width={24} height={24} style={{ borderRadius: 12 }} />
+                )}
+                <button onClick={openAccountModal} className="account-btn">
+                  {account.displayName}
+                  {account.displayBalance && ` • ${account.displayBalance}`}
+                </button>
+                {tokenBalance && parseFloat(tokenBalance) > 0 && (
+                  <span className="smt-badge">
+                    {parseFloat(tokenBalance).toFixed(2)} SMT
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      }}
+    </ConnectButton.Custom>
+  );
 };
 
-export default WalletConnectButton;
+// Export both
+export { WalletProvider, WalletConnectButton };
