@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
-import { useLanguage } from './LanguageContext';
 
 interface WalletContextType {
   address: string | null;
@@ -34,7 +33,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const { data: tokenData } = useBalance({
     address,
-    token: SMARTOUR_TOKEN_ADDRESS,
+    token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
   });
   const tokenBalance = tokenData?.formatted ?? null;
 
@@ -50,7 +49,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return true;
     }
     if (!isConnected) {
-      alert('Please connect wallet first');
+      alert('Connect wallet first!');
       return false;
     }
     alert(`Claimed ${amount} SMT!`);

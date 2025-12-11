@@ -33,18 +33,59 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      {/* ... your beautiful header stays exactly the same ... */}
+      {/* Your beautiful header */}
       <div className="profile-header">
-        {/* ... avatar, name, rank, level bar, journey stats — unchanged ... */}
-        {/* (keeping your original code here — it's perfect) */}
+        <div className="profile-avatar">
+          {userPhoto ? (
+            <img src={userPhoto} alt={userName} />
+          ) : (
+            <div className="avatar-placeholder">{userName[0]?.toUpperCase()}</div>
+          )}
+          <div className="avatar-badge" style={{ background: travelerRank.color }}>
+            {travelerRank.title.split(' ')[0]}
+          </div>
+        </div>
+        <h1>{userName}</h1>
+        <p className="traveler-rank" style={{ color: travelerRank.color }}>
+          {travelerRank.title}
+        </p>
+        <div className="profile-level">
+          <span className="level-badge">Level {userStats.level}</span>
+          <div className="xp-bar">
+            <div className="xp-fill" style={{ width: `${(userStats.xp / userStats.xpToNextLevel) * 100}%` }} />
+          </div>
+          <span className="xp-text">{userStats.xp} / {userStats.xpToNextLevel} XP</span>
+        </div>
+        <div className="journey-stats">
+          <div className="journey-stat">
+            <span className="journey-icon">Map</span>
+            <span className="journey-value">{regionsExplored}/8</span>
+            <span className="journey-label">Regions</span>
+          </div>
+          <div className="journey-stat">
+            <span className="journey-icon">Road</span>
+            <span className="journey-value">{totalDistance}km</span>
+            <span className="journey-label">Traveled</span>
+          </div>
+        </div>
       </div>
 
+      {/* Tabs */}
       <div className="profile-tabs">
-        {/* ... tabs — unchanged ... */}
+        <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>
+          {t('profile.stats')}
+        </button>
+        <button className={activeTab === 'achievements' ? 'active' : ''} onClick={() => setActiveTab('achievements')}>
+          {t('profile.achievements')}
+        </button>
+        <button className={activeTab === 'settings' ? 'active' : ''} onClick={() => setActiveTab('settings')}>
+          {t('profile.settings')}
+        </button>
       </div>
 
+      {/* Content */}
       <div className="profile-content">
-        {/* STATS & ACHIEVEMENTS TABS — unchanged — perfect as-is */}
+        {/* STATS & ACHIEVEMENTS — keep your original code */}
 
         {activeTab === 'settings' && (
           <div className="settings-tab">
@@ -52,16 +93,10 @@ const Profile = () => {
             <div className="settings-section">
               <h3>{t('profile.language')}</h3>
               <div className="language-options">
-                <button
-                  className={`language-btn ${language === 'en' ? 'active' : ''}`}
-                  onClick={() => setLanguage('en')}
-                >
+                <button className={`language-btn ${language === 'en' ? 'active' : ''}`} onClick={() => setLanguage('en')}>
                   English
                 </button>
-                <button
-                  className={`language-btn ${language === 'id' ? 'active' : ''}`}
-                  onClick={() => setLanguage('id')}
-                >
+                <button className={`language-btn ${language === 'id' ? 'active' : ''}`} onClick={() => setLanguage('id')}>
                   Bahasa Indonesia
                 </button>
               </div>
@@ -71,42 +106,26 @@ const Profile = () => {
             <div className="settings-section">
               <h3>{t('profile.wallet')}</h3>
               <div className="wallet-section">
-                {/* Non-Crypto Toggle */}
                 <div className="wallet-mode-toggle">
                   <label className="toggle-label">
-                    <input
-                      type="checkbox"
-                      checked={useNonCryptoMode}
-                      onChange={toggleNonCryptoMode}
-                    />
+                    <input type="checkbox" checked={useNonCryptoMode} onChange={toggleNonCryptoMode} />
                     <span className="toggle-slider" />
-                    <span className="toggle-text">
-                      {t('wallet.non_crypto_mode')}
-                    </span>
+                    <span className="toggle-text">{t('wallet.non_crypto_mode')}</span>
                   </label>
                 </div>
 
-                {/* Reown AppKit Button — NO IMPORT NEEDED */}
                 {!useNonCryptoMode && (
-                  <div className="wallet-connection" style={{ marginTop: '20px', textAlign: 'center' }}>
-                    <w3m-button size="lg" label="Connect Wallet" />
+                  <div style={{ margin: '20px 0', textAlign: 'center' }}>
+                    <w3m-button size="lg" />
                   </div>
                 )}
 
-                {/* Show Balance */}
                 {tokenBalance && !useNonCryptoMode && (
-                  <p className="wallet-balance" style={{ marginTop: '16px', fontSize: '18px', fontWeight: 'bold' }}>
-                    Balance: {parseFloat(tokenBalance || '0').toFixed(2)} SMT
+                  <p style={{ textAlign: 'center', fontSize: '18px', marginTop: '10px' }}>
+                    Balance: {parseFloat(tokenBalance).toFixed(2)} SMT
                   </p>
                 )}
               </div>
-            </div>
-
-            {/* About */}
-            <div className="settings-section">
-              <h3>About</h3>
-              <p className="about-text">Smartour v1.0.0 - Explore Indonesia, Earn Rewards</p>
-              <p className="about-text">A Telegram Mini App for discovering Indonesia's amazing destinations</p>
             </div>
           </div>
         )}
