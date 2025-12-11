@@ -29,12 +29,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const { address, isConnected } = useAccount();
 
-  // MATIC balance
- 18 decimals
+  // MATIC balance (18 decimals)
   const { data: maticData } = useBalance({ address });
   const maticBalance = maticData ? formatUnits(maticData.value, 18) : null;
 
-  // SMT token balance — assuming 18 decimals (change if different)
+  // SMT token balance (18 decimals — change if your token uses different)
   const { data: tokenData } = useBalance({
     address,
     token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
@@ -48,7 +47,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const claimTokens = async (amount: number): Promise<boolean> => {
-    if (useNonCryptoMode) return true;
+    if (useNonCryptoMode) {
+      console.log(`Claimed ${amount} SMT (non-crypto mode)`);
+      return true;
+    }
     if (!isConnected) {
       alert('Connect wallet first!');
       return false;
