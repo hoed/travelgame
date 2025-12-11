@@ -1,50 +1,74 @@
-// src/main.tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
+// src/contexts/WalletContext.tsx
+import React, { createContext, useContext, useState } from 'react';
+import { useAccount, useBalance } from 'wagmi';
+import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
 
-// Reown AppKit (Web3Modal v4)
-import { createAppKit } from '@reown/appkit';
-import { WagmiProvider } from 'wagmi';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { polygon } from 'wagmi/chains';
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-
-// Your project ID (free from https://cloud.reown.com)
-const projectId = '1ef3def5d79cc4883140220816426250';
-
-const metadata = {
-  name: 'Smartour',
-  description: 'Explore Indonesia, Earn Rewards',
-  url: 'https://travelgame.vercel.app',
-  icons: ['https://travelgame.vercel.app/logo.png'],
-};
-
-createAppKit({
-  adapters: [new WagmiAdapter()],
-  projectId,
-  networks: [polygon],
-  metadata,
-  features: { analytics: true },
-});
-
-const queryClient = new QueryClient();
-
-// Telegram init
-if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-  const tg = window.Telegram.WebApp;
-  tg.ready();
-  tg.expand();
-  tg.enableClosingConfirmation();
+interface WalletContextType {
+  address: string | null;
+  isConnected: boolean;
+  maticBalance: string | null;
+  tokenBalance: string | null;
+  useNonCryptoMode: boolean;
+  toggleNonCryptoMode: () => void;
+  claimTokens: (amount: number) => Promise<boolean>;
 }
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <WagmiProvider config={createAppKit.getState().config}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </WagmiProvider>
-  </React.StrictMode>
-);
+const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+export const useWallet = () => {
+  const context = useContext(WalletContext);
+  if (!context) throw new Error('useWalletContext not found');
+  return context;
+};
+
+export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [useNonCryptoMode, setUseNonCryptoMode] = useState(
+    localStorage.getItem('nonCryptoMode') === 'true'
+  );
+
+  const { address, isConnected } = useAccount();
+
+  const { data: maticData } = useBalance({ address });
+  const maticBalance = maticData?.formatted ?? null;
+
+  const { data: tokenData } = useBalance({
+    address,
+    token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
+  });
+  const tokenBalance = tokenData?.formatted ?? null;
+
+  const toggleNonCryptoMode = () => {
+    const newMode = !useNonCryptoMode;
+    setUseNonCryptoMode(newMode);
+    localStorage.setItem('nonCryptoMode', String(newMode));
+  };
+
+  const claimTokens = async (amount: number): Promise<boolean> => {
+    if (useNonCryptoMode) {
+      console.log(`Claimed ${amount} SMT (non-crypto mode)`);
+      return true;
+    }
+    if (!isConnected) {
+      alert('Connect wallet first!');
+      return false;
+    }
+    alert(`Claimed ${amount} SMT!`);
+    return true;
+  };
+
+  return (
+    <WalletContext.Provider
+      value={{
+        address: address ?? null,
+        isConnected,
+        maticBalance,
+        tokenBalance,
+        useNonCryptoMode,
+        toggleNonCryptoMode,
+        claimTokens,
+      }}
+    >
+      {children}
+    </WalletContext.Provider>
+  );
+};
