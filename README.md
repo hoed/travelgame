@@ -1,6 +1,6 @@
 # 🌏 Smartour - Explore Indonesia, Earn Rewards
 
-![Smartour Logo](./public/logo.png)
+![Smartour Logo](public/logo.png){width=180px height=180px}
 
 **Smartour** is an immersive blockchain-powered travel game that transforms exploring Indonesia into an exciting adventure. Discover hidden gems across the archipelago, complete quests, check-in at iconic locations, and earn **SMT (Smartour Token)** rewards on the Polygon network.
 
