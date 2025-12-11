@@ -1,9 +1,7 @@
 // src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState } from 'react';
-import { useAccount } from 'wagmi';
-import { useReadContract } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import { formatUnits } from 'viem';
-import { erc20ABI } from 'viem';
 import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
 
 interface WalletContextType {
@@ -31,18 +29,16 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const { address, isConnected } = useAccount();
 
-  // Native MATIC balance (wagmi v2)
+  // MATIC balance (native chain)
   const { data: maticData } = useBalance({ address });
   const maticBalance = maticData ? formatUnits(maticData.value, 18) : null;
 
-  // ERC20 token balance (wagmi v2 — use useReadContract for tokens)
-  const { data: tokenData } = useReadContract({
-    address: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
-    abi: erc20ABI,
-    functionName: 'balanceOf',
-    args: [address ?? '0x0000000000000000000000000000000000000000'],
+  // SMT token balance (ERC-20) – using useBalance with token address (wagmi v2)
+  const { data: tokenData } = useBalance({
+    address,
+    token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
   });
-  const tokenBalance = tokenData ? formatUnits(tokenData as bigint, 18) : null;
+  const tokenBalance = tokenData ? formatUnits(tokenData.value, 18) : null;
 
   const toggleNonCryptoMode = () => {
     const newMode = !useNonCryptoMode;
@@ -51,10 +47,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const claimTokens = async (amount: number): Promise<boolean> => {
-    if (useNonCryptoMode) {
-      console.log(`Claimed ${amount} SMT (non-crypto mode)`);
-      return true;
-    }
+    if (useNonCryptoMode) return true;
     if (!isConnected) {
       alert('Connect wallet first!');
       return false;
