@@ -1,4 +1,3 @@
-// src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { formatUnits } from 'viem';
@@ -29,16 +28,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const { address, isConnected } = useAccount();
 
-  // MATIC balance (native chain)
-  const { data: maticData } = useBalance({ address });
-  const maticBalance = maticData ? formatUnits(maticData.value, 18) : null;
+  const { data: matic } = useBalance({ address });
+  const maticBalance = matic ? formatUnits(matic.value, 18) : null;
 
-  // SMT token balance (ERC-20) – using useBalance with token address (wagmi v2)
-  const { data: tokenData } = useBalance({
+  const { data: token } = useBalance({
     address,
     token: SMARTOUR_TOKEN_ADDRESS as `0x${string}`,
   });
-  const tokenBalance = tokenData ? formatUnits(tokenData.value, 18) : null;
+  const tokenBalance = token ? formatUnits(token.value, 18) : null;
 
   const toggleNonCryptoMode = () => {
     const newMode = !useNonCryptoMode;
@@ -46,12 +43,8 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     localStorage.setItem('nonCryptoMode', String(newMode));
   };
 
-  const claimTokens = async (amount: number): Promise<boolean> => {
+  const claimTokens = async (amount: number) => {
     if (useNonCryptoMode) return true;
-    if (!isConnected) {
-      alert('Connect wallet first!');
-      return false;
-    }
     alert(`Claimed ${amount} SMT!`);
     return true;
   };
