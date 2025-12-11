@@ -18,7 +18,7 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.10",
     "@tanstack/react-query": "^5.90.12",
-    "@telegram-apps/sdk-react": "^3.3.9",
+    "@telegram-apps/sdk-react": "^2.0.25",
     "@types/leaflet": "^1.9.21",
     "ethers": "^6.15.0",
     "exif-js": "^2.3.0",
