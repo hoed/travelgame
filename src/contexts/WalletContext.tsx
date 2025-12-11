@@ -135,6 +135,3 @@ export const WalletConnectButton: React.FC = () => {
     </ConnectButton.Custom>
   );
 };
-
-// Export both
-export { WalletProvider, WalletConnectButton };
