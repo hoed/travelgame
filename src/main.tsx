@@ -2,17 +2,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css'; // ← Your neon theme stays in control
+import './index.css';
 
-// Reown AppKit (Web3Modal v4) - no heavy CSS
+// Reown AppKit (Web3Modal v4)
 import { createAppKit } from '@reown/appkit';
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { polygon } from 'wagmi/chains';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 
-// Your free project ID from https://cloud.reown.com
-const projectId = '1ef3def5d79cc4883140220816426250'; // ← same as before
+// Your project ID (free from https://cloud.reown.com)
+const projectId = '1ef3def5d79cc4883140220816426250';
 
 const metadata = {
   name: 'Smartour',
@@ -26,20 +26,18 @@ createAppKit({
   projectId,
   networks: [polygon],
   metadata,
-  features: {
-    analytics: true,
-  },
+  features: { analytics: true },
 });
 
-// Telegram WebApp init
+const queryClient = new QueryClient();
+
+// Telegram init
 if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
   const tg = window.Telegram.WebApp;
   tg.ready();
   tg.expand();
   tg.enableClosingConfirmation();
 }
-
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

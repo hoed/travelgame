@@ -1,11 +1,8 @@
 // src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SMARTOUR_TOKEN_ADDRESS } from '../config/web3Config';
-import { Wallet } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import './WalletConnect.css';
 
 interface WalletContextType {
   address: string | null;
@@ -74,64 +71,5 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     >
       {children}
     </WalletContext.Provider>
-  );
-};
-
-// Beautiful RainbowKit wallet button
-export const WalletConnectButton: React.FC = () => {
-  const { t } = useLanguage();
-  const { useNonCryptoMode, toggleNonCryptoMode, tokenBalance } = useWallet();
-
-  if (useNonCryptoMode) {
-    return (
-      <button onClick={toggleNonCryptoMode} className="non-crypto-btn">
-        Non-Crypto Mode Active
-      </button>
-    );
-  }
-
-  return (
-    <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        mounted,
-      }) => {
-        const connected = mounted && account && chain;
-
-        return (
-          <div className="wallet-connect-wrapper">
-            {!connected ? (
-              <button onClick={openConnectModal} className="connect-btn">
-                <Wallet size={18} />
-                {t('wallet.connect')}
-              </button>
-            ) : chain.unsupported ? (
-              <button onClick={openChainModal} className="wrong-network">
-                Wrong Network
-              </button>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                {chain.iconUrl && (
-                  <img src={chain.iconUrl} alt={chain.name} width={24} height={24} style={{ borderRadius: 12 }} />
-                )}
-                <button onClick={openAccountModal} className="account-btn">
-                  {account.displayName}
-                  {account.displayBalance && ` • ${account.displayBalance}`}
-                </button>
-                {tokenBalance && parseFloat(tokenBalance) > 0 && (
-                  <span className="smt-badge">
-                    {parseFloat(tokenBalance).toFixed(2)} SMT
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        );
-      }}
-    </ConnectButton.Custom>
   );
 };
